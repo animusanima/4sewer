@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:padding="16dp"
+    tools:context=".Stoffe.StoffEditActivity">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="horizontal|vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+    <EditText
+        android:id="@+id/edit_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+            android:hint="@string/label_name"/>
+
+        <EditText
+            android:id="@+id/edit_hersteller"
+            android:layout_marginTop="4dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/label_hersteller"/>
+
+        <EditText
+            android:id="@+id/edit_laenge"
+            android:layout_marginTop="4dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/label_laenge"/>
+
+        <EditText
+            android:id="@+id/edit_breite"
+            android:layout_marginTop="4dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/label_breite"/>
+
+        <EditText
+            android:id="@+id/edit_einkaufspreis"
+            android:layout_marginTop="4dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/label_einkaufspreis"
+            android:layout_marginBottom="16dp"/>
+
+        <Spinner
+            android:id="@+id/spinner_stoffart"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"/>
+
+            <com.thebluealliance.spectrum.SpectrumPalette
+                android:id="@+id/farb_auswahl"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:spectrum_colors="@array/colors_array"
+                app:spectrum_columnCount="6"/>
+
+    </LinearLayout>
+
+    </ScrollView>
+
+</LinearLayout>

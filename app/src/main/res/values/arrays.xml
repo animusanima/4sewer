@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="array_stoffarten">
+        <item>@string/stoffart_unbekannt</item>
+        <item>@string/stoffart_baumwolle</item>
+        <item>@string/stoffart_jersey</item>
+        <item>@string/stoffart_leder</item>
+        <item>@string/stoffart_jeans</item>
+        <item>@string/stoffart_sweat</item>
+        <item>@string/stoffart_interlock</item>
+    </string-array>
+
+    <integer-array name="colors_array">
+        <item name="white">@color/white</item>
+        <item name="yellow">@color/yellow</item>
+        <item name="fuchsia">@color/fuchsia</item>
+        <item name="red">@color/red</item>
+        <item name="silver">@color/silver</item>
+        <item name="gray">@color/gray</item>
+        <item name="olive">@color/olive</item>
+        <item name="purple">@color/purple</item>
+        <item name="maroon">@color/maroon</item>
+        <item name="aqua">@color/aqua</item>
+        <item name="lime">@color/lime</item>
+        <item name="teal">@color/teal</item>
+        <item name="green">@color/green</item>
+        <item name="blue">@color/blue</item>
+        <item name="navy">@color/navy</item>
+        <item name="black">@color/black</item>
+    </integer-array>
+</resources>

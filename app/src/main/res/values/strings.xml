@@ -1,0 +1,54 @@
+<resources>
+    <string name="app_name">4sewer</string>
+    <string name="title_activity_about">About</string>
+    <string name="title_activity_main">Hauptansicht</string>
+    <string name="title_activity_stoff">Stoffe</string>
+    <string name="title_activity_schnittmuster">Schnittmuster</string>
+    <string name="title_activity_naehprojekt">Nähprojekte</string>
+
+    <string name="navigation_drawer_open">Navigationsmenü öffnen</string>
+    <string name="navigation_drawer_close">Navigationsmenü schließen</string>
+
+    <string name="action_settings">Einstellungen</string>
+
+    <string name="stoff_neu">Stoff hinzufügen</string>
+    <string name="stoff_bearbeiten">Stoff bearbeiten</string>
+    <string name="stoff_loeschen">Stoff löschen</string>
+
+    <string name="stoffart_unbekannt">Unbekannt</string>
+    <string name="stoffart_baumwolle">Baumwolle</string>
+    <string name="stoffart_jersey">Jersey</string>
+    <string name="stoffart_leder">Leder</string>
+    <string name="stoffart_jeans">Jeans</string>
+    <string name="stoffart_sweat">Sweat</string>
+    <string name="stoffart_interlock">Interlock</string>
+
+    <string name="ungesichterte_aenderungen_dialog_nachricht">Änderungen verwerfen und die Bearbeitung abbrechen?</string>
+
+    <string name="verwerfen">Verwerfen</string>
+
+    <string name="weiterbearbeiten">Weiter bearbeiten</string>
+
+    <string name="editor_stoff_loeschen_erfolgreich">Stoff gelöscht</string>
+
+    <string name="editor_stoff_loeschen_fehler">Fehler beim Löschen des Stoffes</string>
+
+    <string name="stoff_sichern_erfolgreich">Speichern erfolgreich</string>
+
+    <string name="stoff_sichern_fehler">Fehler beim Speichern des Stoffes</string>
+
+    <string name="loeschen_dialog_nachricht">Diesen Stoff löschen?</string>
+
+    <string name="loeschen">Löschen</string>
+
+    <string name="abbrechen">Abbrechen</string>
+
+    <string name="unbekannte_stoffart">Unbekannte Stoffart</string>
+    <string name="label_name">Name</string>
+    <string name="label_hersteller">Hersteller</string>
+    <string name="label_laenge">Länge</string>
+    <string name="label_breite">Breite</string>
+    <string name="label_einkaufspreis">Einkaufspreis</string>
+    <string name="stoff_suchen">Suche Stoff</string>
+
+</resources>

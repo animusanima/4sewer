@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_stoffe"
+            android:icon="@drawable/ansicht_stoffe"
+            android:title="Stoffe"/>
+        <item
+            android:id="@+id/nav_schnittmuster"
+            android:icon="@drawable/ansicht_schnittmuster"
+            android:title="Schnittmuster"/>
+        <item
+            android:id="@+id/nav_naehprojekte"
+            android:icon="@drawable/ansicht_naehprojekt"
+            android:title="Nähprojekte"/>
+    </group>
+
+    <item android:title="Informationen">
+        <menu>
+            <item
+                android:id="@+id/nav_about"
+                android:icon="@drawable/heart_red"
+                android:title="About us"/>
+        </menu>
+    </item>
+
+</menu>

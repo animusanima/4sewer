@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="@dimen/list_item_height">
+
+    <LinearLayout
+        android:id="@+id/stoff_item"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="16dp">
+
+        <RelativeLayout
+            android:id="@+id/text_container"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/list_item_height"
+            android:layout_weight="1" >
+
+            <TextView
+                android:id="@+id/titel_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Mamasliebchen"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentLeft="true"
+                android:textAppearance="?android:textAppearanceLarge"/>
+
+            <TextView
+                android:id="@+id/hersteller_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Shapelines"
+                android:layout_below="@+id/titel_view"
+                android:textAppearance="?android:textAppearanceMedium" />
+
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/kategorie_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Baumwolle"
+            android:layout_alignParentRight="true"
+            android:textAppearance="?android:textAppearanceLarge"/>
+
+    </LinearLayout>
+
+</RelativeLayout>
