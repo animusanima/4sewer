@@ -1,12 +1,9 @@
-package animusanima.learning.android.stoffkiste.about;
+package com.github.animusanima.a4sewer.about;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-import com.mikepenz.aboutlibraries.Libs;
-import com.mikepenz.aboutlibraries.LibsBuilder;
-
-import animusanima.learning.android.stoffkiste.R;
+import com.github.animusanima.a4sewer.R;
 
 public class AboutActivity extends AppCompatActivity
 {

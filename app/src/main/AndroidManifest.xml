@@ -12,7 +12,7 @@
 
         <provider
             android:name=".db.stoffe.StoffProvider"
-            android:authorities="animusanima.learning.android.stoffkiste"
+            android:authorities="com.github.animusanima.a4sewer"
             android:exported="false" />
 
         <activity

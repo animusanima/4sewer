@@ -1,4 +1,4 @@
-package animusanima.learning.android.stoffkiste.db.stoffe;
+package com.github.animusanima.a4sewer.db.stoffe;
 
 import android.content.ContentResolver;
 import android.net.Uri;
@@ -6,7 +6,7 @@ import android.provider.BaseColumns;
 
 public final class StoffeContract implements BaseColumns
 {
-    public static final String CONTENT_AUTHORITY = "animusanima.learning.android.stoffkiste";
+    public static final String CONTENT_AUTHORITY = "com.github.animusanima.a4sewer";
     public static final Uri BASE_CONTENT_URI = Uri.parse("content://" + CONTENT_AUTHORITY);
     public static final String PATH_STOFFE = "stoffe";
 

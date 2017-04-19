@@ -14,10 +14,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.mikepenz.aboutlibraries.Libs;
-import com.mikepenz.aboutlibraries.LibsBuilder;
-
-import animusanima.learning.android.stoffkiste.Stoffe.StoffActivity;
+import com.github.animusanima.a4sewer.Stoffe.StoffActivity;
 import de.mateware.snacky.Snacky;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener
@@ -118,13 +115,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
         else if ( id == R.id.nav_about )
         {
-            new LibsBuilder()
-                    .withAutoDetect(true)
-                    .withFields(R.string.class.getFields())
-                    .withAboutIconShown(true)
-                    .withLibraries("Snacky", "MaterialSearchBar", "SmallBang")
-                    .withActivityStyle(Libs.ActivityStyle.LIGHT_DARK_TOOLBAR)
-                    .start(this);
+            // TODO: Implement about section
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

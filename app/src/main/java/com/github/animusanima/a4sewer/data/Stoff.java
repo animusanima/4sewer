@@ -1,8 +1,8 @@
-package animusanima.learning.android.stoffkiste.data;
+package com.github.animusanima.a4sewer.data;
 
 import android.database.Cursor;
 
-import animusanima.learning.android.stoffkiste.db.stoffe.StoffeContract;
+import com.github.animusanima.a4sewer.db.stoffe.StoffeContract;
 
 public class Stoff
 {

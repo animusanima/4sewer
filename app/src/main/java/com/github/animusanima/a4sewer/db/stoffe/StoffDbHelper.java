@@ -1,4 +1,4 @@
-package animusanima.learning.android.stoffkiste.db.stoffe;
+package com.github.animusanima.a4sewer.db.stoffe;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;

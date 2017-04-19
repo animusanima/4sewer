@@ -1,4 +1,4 @@
-package animusanima.learning.android.stoffkiste.Stoffe;
+package com.github.animusanima.a4sewer.Stoffe;
 
 import android.app.AlertDialog;
 import android.app.LoaderManager;
@@ -27,10 +27,10 @@ import android.widget.Spinner;
 
 import com.thebluealliance.spectrum.SpectrumPalette;
 
-import animusanima.learning.android.stoffkiste.R;
-import animusanima.learning.android.stoffkiste.data.CategoryHelper;
-import animusanima.learning.android.stoffkiste.data.Stoff;
-import animusanima.learning.android.stoffkiste.db.stoffe.StoffeContract;
+import com.github.animusanima.a4sewer.R;
+import com.github.animusanima.a4sewer.data.CategoryHelper;
+import com.github.animusanima.a4sewer.data.Stoff;
+import com.github.animusanima.a4sewer.db.stoffe.StoffeContract;
 
 public class StoffEditActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>
 {

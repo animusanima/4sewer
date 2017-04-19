@@ -1,13 +1,8 @@
-package animusanima.learning.android.stoffkiste.db.stoffe;
+package com.github.animusanima.a4sewer.db.stoffe;
 
 import android.content.Context;
-import android.content.res.Resources;
 import android.database.Cursor;
 import android.graphics.Color;
-import android.graphics.drawable.GradientDrawable;
-import android.support.annotation.ColorRes;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.graphics.ColorUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,11 +10,9 @@ import android.widget.CursorAdapter;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.thebluealliance.spectrum.SpectrumPalette;
-
-import animusanima.learning.android.stoffkiste.R;
-import animusanima.learning.android.stoffkiste.data.CategoryHelper;
-import animusanima.learning.android.stoffkiste.data.Stoff;
+import com.github.animusanima.a4sewer.R;
+import com.github.animusanima.a4sewer.data.CategoryHelper;
+import com.github.animusanima.a4sewer.data.Stoff;
 
 public class StoffCursorAdapter extends CursorAdapter
 {

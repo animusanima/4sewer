@@ -1,4 +1,4 @@
-package animusanima.learning.android.stoffkiste.Stoffe;
+package com.github.animusanima.a4sewer.Stoffe;
 
 import android.app.LoaderManager;
 import android.app.SearchManager;
@@ -19,9 +19,10 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-import animusanima.learning.android.stoffkiste.R;
-import animusanima.learning.android.stoffkiste.db.stoffe.StoffCursorAdapter;
-import animusanima.learning.android.stoffkiste.db.stoffe.StoffeContract;
+import com.github.animusanima.a4sewer.R;
+import com.github.animusanima.a4sewer.data.CategoryHelper;
+import com.github.animusanima.a4sewer.db.stoffe.StoffCursorAdapter;
+import com.github.animusanima.a4sewer.db.stoffe.StoffeContract;
 
 public class StoffActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>
 {
@@ -29,7 +30,7 @@ public class StoffActivity extends AppCompatActivity implements LoaderManager.Lo
 
     private StoffCursorAdapter stoffAdapter;
 
-    private Cursor originalData, filteredData;
+    private Cursor originalData;
 
     private FloatingActionButton fab;
 
@@ -109,7 +110,11 @@ public class StoffActivity extends AppCompatActivity implements LoaderManager.Lo
                             builder.append(String.format(" OR (%s like ?) ", s));
                         }
                     }
-                    filteredData = getContentResolver().query(StoffeContract.CONTENT_URI, StoffeContract.ALL_COLUMNS, builder.toString(), new String[]{searchTerm}, null);
+                    Cursor filteredData = getContentResolver().query(StoffeContract.CONTENT_URI,
+                            StoffeContract.ALL_COLUMNS,
+                            builder.toString(),
+                            new String[]{searchTerm, String.valueOf(CategoryHelper.getIDByCategory(searchTerm))},
+                            null);
                     stoffAdapter.swapCursor(filteredData);
                     return true;
                 }
