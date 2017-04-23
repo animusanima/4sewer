@@ -2,17 +2,17 @@ package com.github.animusanima.a4sewer.data;
 
 import android.database.Cursor;
 
-import com.github.animusanima.a4sewer.db.stoffe.StoffeContract;
+import com.github.animusanima.a4sewer.db.stoffe.StoffeTableInformation;
 
 public class Stoff
 {
     private String name, hersteller, farbe;
-    private int laenge, breite, kategorie;
+    private int laenge, breite, kategorie, anzahl;
     private double einkaufspreis;
 
     public Stoff(String name, String hersteller,
                  int laenge, int breite, int kategorie, String farbe,
-                 double einkaufspreis)
+                 double einkaufspreis, int anzahl)
     {
         this.name = name;
         this.hersteller = hersteller;
@@ -23,17 +23,19 @@ public class Stoff
         this.farbe = farbe;
 
         this.einkaufspreis = einkaufspreis;
+        this.anzahl = anzahl;
     }
 
     public Stoff(Cursor cursor)
     {
-        int nameColumnIndex = cursor.getColumnIndex(StoffeContract.COLUMN_STOFFE_NAME);
-        int herstellerColumnIndex = cursor.getColumnIndex(StoffeContract.COLUMN_STOFFE_HERSTELLER);
-        int laengeColumnIndex = cursor.getColumnIndex(StoffeContract.COLUMN_STOFFE_LAENGE);
-        int breiteColumnIndex = cursor.getColumnIndex(StoffeContract.COLUMN_STOFFE_BREITE);
-        int kategorieColumnIndex = cursor.getColumnIndex(StoffeContract.COLUMN_STOFFE_KATEGORIE);
-        int einkaufspreisColumnIndex = cursor.getColumnIndex(StoffeContract.COLUMN_STOFFE_EINKAUFSPREIS);
-        int farbeColumnIndex = cursor.getColumnIndex(StoffeContract.COLUMN_STOFFE_FARBE);
+        int nameColumnIndex = cursor.getColumnIndex(StoffeTableInformation.COLUMN_STOFFE_NAME);
+        int herstellerColumnIndex = cursor.getColumnIndex(StoffeTableInformation.COLUMN_STOFFE_HERSTELLER);
+        int laengeColumnIndex = cursor.getColumnIndex(StoffeTableInformation.COLUMN_STOFFE_LAENGE);
+        int breiteColumnIndex = cursor.getColumnIndex(StoffeTableInformation.COLUMN_STOFFE_BREITE);
+        int kategorieColumnIndex = cursor.getColumnIndex(StoffeTableInformation.COLUMN_STOFFE_KATEGORIE);
+        int einkaufspreisColumnIndex = cursor.getColumnIndex(StoffeTableInformation.COLUMN_STOFFE_EINKAUFSPREIS);
+        int farbeColumnIndex = cursor.getColumnIndex(StoffeTableInformation.COLUMN_STOFFE_FARBE);
+        int anzahlColumnIndex = cursor.getColumnIndex(StoffeTableInformation.COLUMN_STOFFE_ANZAHL);
 
         this.name = cursor.getString(nameColumnIndex);
         this.hersteller = cursor.getString(herstellerColumnIndex);
@@ -42,6 +44,7 @@ public class Stoff
         this.kategorie = cursor.getInt(kategorieColumnIndex);
         this.einkaufspreis = cursor.getDouble(einkaufspreisColumnIndex);
         this.farbe = cursor.getString(farbeColumnIndex);
+        this.anzahl = cursor.getInt(anzahlColumnIndex);
     }
 
     public String getHersteller()
@@ -77,5 +80,9 @@ public class Stoff
     public String getFarbe()
     {
         return farbe;
+    }
+
+    public int getAnzahl() {
+        return anzahl;
     }
 }

@@ -28,15 +28,16 @@ public class StoffDbHelper extends SQLiteOpenHelper
                         "%s TEXT NOT NULL, " + // NAME
                         "%s TEXT NOT NULL, " + // HERSTELLER
                         "%s INTEGER NOT NULL, " + // KATEGORIE
-                        "%s TEXT NOT NULL, " + // FARBE
-                        "%s INTEGER NOT NULL, " + // LAENGE
-                        "%s INTEGER NOT NULL, " + // BREITE
-                        "%s REAL NOT NULL);", // EINKAUFSPREIS
-                StoffeContract.TABLE_NAME, StoffeContract._ID,
-                StoffeContract.COLUMN_STOFFE_NAME, StoffeContract.COLUMN_STOFFE_HERSTELLER,
-                StoffeContract.COLUMN_STOFFE_KATEGORIE, StoffeContract.COLUMN_STOFFE_FARBE,
-                StoffeContract.COLUMN_STOFFE_LAENGE, StoffeContract.COLUMN_STOFFE_BREITE,
-                StoffeContract.COLUMN_STOFFE_EINKAUFSPREIS);
+                        "%s TEXT, " + // FARBE
+                        "%s INTEGER, " + // LAENGE
+                        "%s INTEGER, " + // BREITE
+                        "%s REAL," + // EINKAUFSPREIS
+                        "%s INTEGER NOT NULL);", // ANZAHL
+                StoffeTableInformation.TABLE_NAME, StoffeTableInformation._ID,
+                StoffeTableInformation.COLUMN_STOFFE_NAME, StoffeTableInformation.COLUMN_STOFFE_HERSTELLER,
+                StoffeTableInformation.COLUMN_STOFFE_KATEGORIE, StoffeTableInformation.COLUMN_STOFFE_FARBE,
+                StoffeTableInformation.COLUMN_STOFFE_LAENGE, StoffeTableInformation.COLUMN_STOFFE_BREITE,
+                StoffeTableInformation.COLUMN_STOFFE_EINKAUFSPREIS, StoffeTableInformation.COLUMN_STOFFE_ANZAHL);
         sqLiteDatabase.execSQL(CREATE_TABLE_STOFFE);
     }
 

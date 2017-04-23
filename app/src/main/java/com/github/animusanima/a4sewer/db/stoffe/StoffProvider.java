@@ -36,8 +36,8 @@ public class StoffProvider extends ContentProvider
         // should recognize. All paths added to the UriMatcher have a corresponding code to return
         // when a match is found.
 
-        sUriMatcher.addURI(StoffeContract.CONTENT_AUTHORITY, StoffeContract.PATH_STOFFE, STOFFE);
-        sUriMatcher.addURI(StoffeContract.CONTENT_AUTHORITY, StoffeContract.PATH_STOFFE + "/#", STOFFE_ID);
+        sUriMatcher.addURI(StoffeTableInformation.CONTENT_AUTHORITY, StoffeTableInformation.PATH_STOFFE, STOFFE);
+        sUriMatcher.addURI(StoffeTableInformation.CONTENT_AUTHORITY, StoffeTableInformation.PATH_STOFFE + "/#", STOFFE_ID);
     }
 
     /**
@@ -65,12 +65,12 @@ public class StoffProvider extends ContentProvider
         switch ( match )
         {
             case STOFFE:
-                cursor = database.query(StoffeContract.TABLE_NAME, projection, selection, selectionArgs, null, null, sortOrder);
+                cursor = database.query(StoffeTableInformation.TABLE_NAME, projection, selection, selectionArgs, null, null, sortOrder);
                 break;
             case STOFFE_ID:
-                selection = StoffeContract._ID + "=?";
+                selection = StoffeTableInformation._ID + "=?";
                 selectionArgs = new String[]{String.valueOf(ContentUris.parseId(uri))};
-                cursor = database.query(StoffeContract.TABLE_NAME, projection, selection, selectionArgs, null, null, sortOrder);
+                cursor = database.query(StoffeTableInformation.TABLE_NAME, projection, selection, selectionArgs, null, null, sortOrder);
                 break;
             default:
                 throw new IllegalArgumentException("Cannot query unknown URI " + uri);
@@ -91,7 +91,7 @@ public class StoffProvider extends ContentProvider
         // Create and/or open a database to read from it
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
-        long newID = db.insert(StoffeContract.TABLE_NAME, null, contentValues);
+        long newID = db.insert(StoffeTableInformation.TABLE_NAME, null, contentValues);
         // If the ID is -1, then the insertion failed. Log an error and return null.
         if (newID == -1) {
             Log.e(LOG_TAG, "Failed to insert row for " + uri);
@@ -105,13 +105,13 @@ public class StoffProvider extends ContentProvider
 
     private void validateInsertValues(ContentValues contentValues)
     {
-        validateStringParameter(contentValues, StoffeContract.COLUMN_STOFFE_NAME);
-        validateStringParameter(contentValues, StoffeContract.COLUMN_STOFFE_HERSTELLER);
-        validateIntegerParameter(contentValues, StoffeContract.COLUMN_STOFFE_KATEGORIE);
-        validateIntegerParameter(contentValues, StoffeContract.COLUMN_STOFFE_LAENGE);
-        validateIntegerParameter(contentValues, StoffeContract.COLUMN_STOFFE_BREITE);
-        validateStringParameter(contentValues, StoffeContract.COLUMN_STOFFE_FARBE);
-        validateDoubleParameter(contentValues, StoffeContract.COLUMN_STOFFE_EINKAUFSPREIS);
+        validateStringParameter(contentValues, StoffeTableInformation.COLUMN_STOFFE_NAME);
+        validateStringParameter(contentValues, StoffeTableInformation.COLUMN_STOFFE_HERSTELLER);
+        validateIntegerParameter(contentValues, StoffeTableInformation.COLUMN_STOFFE_KATEGORIE);
+        validateIntegerParameter(contentValues, StoffeTableInformation.COLUMN_STOFFE_LAENGE);
+        validateIntegerParameter(contentValues, StoffeTableInformation.COLUMN_STOFFE_BREITE);
+        validateStringParameter(contentValues, StoffeTableInformation.COLUMN_STOFFE_FARBE);
+        validateDoubleParameter(contentValues, StoffeTableInformation.COLUMN_STOFFE_EINKAUFSPREIS);
     }
 
     private void validateStringParameter(ContentValues contentValues, String columnName)
@@ -146,7 +146,7 @@ public class StoffProvider extends ContentProvider
             case STOFFE:
                 return aktualisiereStoffe(uri, contentValues, selection, selectionArgs);
             case STOFFE_ID:
-                selection = StoffeContract._ID + "=?";
+                selection = StoffeTableInformation._ID + "=?";
                 selectionArgs = new String[]{String.valueOf(ContentUris.parseId(uri))};
                 return aktualisiereStoffe(uri, contentValues, selection, selectionArgs);
             default:
@@ -163,7 +163,7 @@ public class StoffProvider extends ContentProvider
         validateUpdateValues(values);
 
         SQLiteDatabase database = dbHelper.getWritableDatabase();
-        int rowsAffected = database.update(StoffeContract.TABLE_NAME, values, selection, selectionArgs);
+        int rowsAffected = database.update(StoffeTableInformation.TABLE_NAME, values, selection, selectionArgs);
 
         if (rowsAffected >= 1)
             getContext().getContentResolver().notifyChange(uri, null);
@@ -172,13 +172,13 @@ public class StoffProvider extends ContentProvider
 
     private void validateUpdateValues(ContentValues values)
     {
-        validateStringColumn(values, StoffeContract.COLUMN_STOFFE_NAME);
-        validateStringColumn(values, StoffeContract.COLUMN_STOFFE_HERSTELLER);
-        validateStringColumn(values, StoffeContract.COLUMN_STOFFE_FARBE);
-        validateIntegerColumn(values, StoffeContract.COLUMN_STOFFE_KATEGORIE);
-        validateIntegerColumn(values, StoffeContract.COLUMN_STOFFE_LAENGE);
-        validateIntegerColumn(values, StoffeContract.COLUMN_STOFFE_BREITE);
-        validateDoubleColumn(values, StoffeContract.COLUMN_STOFFE_EINKAUFSPREIS);
+        validateStringColumn(values, StoffeTableInformation.COLUMN_STOFFE_NAME);
+        validateStringColumn(values, StoffeTableInformation.COLUMN_STOFFE_HERSTELLER);
+        validateStringColumn(values, StoffeTableInformation.COLUMN_STOFFE_FARBE);
+        validateIntegerColumn(values, StoffeTableInformation.COLUMN_STOFFE_KATEGORIE);
+        validateIntegerColumn(values, StoffeTableInformation.COLUMN_STOFFE_LAENGE);
+        validateIntegerColumn(values, StoffeTableInformation.COLUMN_STOFFE_BREITE);
+        validateDoubleColumn(values, StoffeTableInformation.COLUMN_STOFFE_EINKAUFSPREIS);
     }
 
     private void validateStringColumn(ContentValues values, String columnName)
@@ -224,13 +224,13 @@ public class StoffProvider extends ContentProvider
         switch (match) {
             case STOFFE:
                 // Delete all rows that match the selection and selection args
-                deletedRows = database.delete(StoffeContract.TABLE_NAME, selection, selectionArgs);
+                deletedRows = database.delete(StoffeTableInformation.TABLE_NAME, selection, selectionArgs);
                 break;
             case STOFFE_ID:
                 // Delete a single row given by the ID in the URI
-                selection = StoffeContract._ID + "=?";
+                selection = StoffeTableInformation._ID + "=?";
                 selectionArgs = new String[] { String.valueOf(ContentUris.parseId(uri)) };
-                deletedRows = database.delete(StoffeContract.TABLE_NAME, selection, selectionArgs);
+                deletedRows = database.delete(StoffeTableInformation.TABLE_NAME, selection, selectionArgs);
                 break;
             default:
                 throw new IllegalArgumentException("Deletion is not supported for " + uri);
@@ -249,9 +249,9 @@ public class StoffProvider extends ContentProvider
         final int match = sUriMatcher.match(uri);
         switch (match) {
             case STOFFE:
-                return StoffeContract.CONTENT_LIST_TYPE;
+                return StoffeTableInformation.CONTENT_LIST_TYPE;
             case STOFFE_ID:
-                return StoffeContract.CONTENT_ITEM_TYPE;
+                return StoffeTableInformation.CONTENT_ITEM_TYPE;
             default:
                 throw new IllegalStateException("Unknown URI " + uri + " with match " + match);
         }

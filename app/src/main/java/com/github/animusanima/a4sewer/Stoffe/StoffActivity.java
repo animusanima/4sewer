@@ -22,7 +22,7 @@ import android.widget.ListView;
 import com.github.animusanima.a4sewer.R;
 import com.github.animusanima.a4sewer.data.CategoryHelper;
 import com.github.animusanima.a4sewer.db.stoffe.StoffCursorAdapter;
-import com.github.animusanima.a4sewer.db.stoffe.StoffeContract;
+import com.github.animusanima.a4sewer.db.stoffe.StoffeTableInformation;
 
 public class StoffActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>
 {
@@ -62,7 +62,7 @@ public class StoffActivity extends AppCompatActivity implements LoaderManager.Lo
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long ID)
             {
                 Intent stoffEditIntent = new Intent(StoffActivity.this, StoffEditActivity.class);
-                Uri stoffUri = ContentUris.withAppendedId(StoffeContract.CONTENT_URI, ID);
+                Uri stoffUri = ContentUris.withAppendedId(StoffeTableInformation.CONTENT_URI, ID);
                 stoffEditIntent.setData(stoffUri);
                 startActivity(stoffEditIntent);
             }
@@ -99,7 +99,7 @@ public class StoffActivity extends AppCompatActivity implements LoaderManager.Lo
                 {
                     StringBuilder builder = new StringBuilder();
                     String searchTerm = "%" + text.toString() + "%";
-                    for ( String s : StoffeContract.FILTER_COLUMNS )
+                    for ( String s : StoffeTableInformation.FILTER_COLUMNS )
                     {
                         if ( builder.length() == 0 )
                         {
@@ -110,8 +110,8 @@ public class StoffActivity extends AppCompatActivity implements LoaderManager.Lo
                             builder.append(String.format(" OR (%s like ?) ", s));
                         }
                     }
-                    Cursor filteredData = getContentResolver().query(StoffeContract.CONTENT_URI,
-                            StoffeContract.ALL_COLUMNS,
+                    Cursor filteredData = getContentResolver().query(StoffeTableInformation.CONTENT_URI,
+                            StoffeTableInformation.ALL_COLUMNS,
                             builder.toString(),
                             new String[]{searchTerm, String.valueOf(CategoryHelper.getIDByCategory(searchTerm))},
                             null);
@@ -128,8 +128,8 @@ public class StoffActivity extends AppCompatActivity implements LoaderManager.Lo
     public Loader<Cursor> onCreateLoader(int id, Bundle args)
     {
         return new CursorLoader(this,
-                StoffeContract.CONTENT_URI,
-                StoffeContract.ALL_COLUMNS,
+                StoffeTableInformation.CONTENT_URI,
+                StoffeTableInformation.ALL_COLUMNS,
                 null,
                 null,
                 null);

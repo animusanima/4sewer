@@ -30,7 +30,7 @@ import com.thebluealliance.spectrum.SpectrumPalette;
 import com.github.animusanima.a4sewer.R;
 import com.github.animusanima.a4sewer.data.CategoryHelper;
 import com.github.animusanima.a4sewer.data.Stoff;
-import com.github.animusanima.a4sewer.db.stoffe.StoffeContract;
+import com.github.animusanima.a4sewer.db.stoffe.StoffeTableInformation;
 
 public class StoffEditActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>
 {
@@ -61,7 +61,7 @@ public class StoffEditActivity extends AppCompatActivity implements LoaderManage
      * 5 = Sweat,
      * 6 = Interlock
      */
-    private int stoffArt = StoffeContract.KATEGORIE_UNBEKANNT;
+    private int stoffArt = StoffeTableInformation.KATEGORIE_UNBEKANNT;
 
     private boolean stoffWasChanged = false;
 
@@ -141,7 +141,7 @@ public class StoffEditActivity extends AppCompatActivity implements LoaderManage
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-                stoffArt = StoffeContract.KATEGORIE_UNBEKANNT;
+                stoffArt = StoffeTableInformation.KATEGORIE_UNBEKANNT;
             }
         });
 
@@ -237,13 +237,13 @@ public class StoffEditActivity extends AppCompatActivity implements LoaderManage
         }
 
         ContentValues stoffdata = new ContentValues();
-        stoffdata.put(StoffeContract.COLUMN_STOFFE_NAME, nameString);
-        stoffdata.put(StoffeContract.COLUMN_STOFFE_HERSTELLER, herstellerString);
-        stoffdata.put(StoffeContract.COLUMN_STOFFE_KATEGORIE, stoffArt);
-        stoffdata.put(StoffeContract.COLUMN_STOFFE_FARBE, ausgewaehlte_farbe);
-        setDoubleValue(stoffdata, einkaufspreisString, StoffeContract.COLUMN_STOFFE_EINKAUFSPREIS);
-        setIntegerValue(stoffdata, laengeString, StoffeContract.COLUMN_STOFFE_LAENGE);
-        setIntegerValue(stoffdata, breiteString, StoffeContract.COLUMN_STOFFE_BREITE);
+        stoffdata.put(StoffeTableInformation.COLUMN_STOFFE_NAME, nameString);
+        stoffdata.put(StoffeTableInformation.COLUMN_STOFFE_HERSTELLER, herstellerString);
+        stoffdata.put(StoffeTableInformation.COLUMN_STOFFE_KATEGORIE, stoffArt);
+        stoffdata.put(StoffeTableInformation.COLUMN_STOFFE_FARBE, ausgewaehlte_farbe);
+        setDoubleValue(stoffdata, einkaufspreisString, StoffeTableInformation.COLUMN_STOFFE_EINKAUFSPREIS);
+        setIntegerValue(stoffdata, laengeString, StoffeTableInformation.COLUMN_STOFFE_LAENGE);
+        setIntegerValue(stoffdata, breiteString, StoffeTableInformation.COLUMN_STOFFE_BREITE);
 
         if (stoffContentUri == null)
         {
@@ -264,7 +264,7 @@ public class StoffEditActivity extends AppCompatActivity implements LoaderManage
                 && TextUtils.isEmpty(breiteString)
                 && TextUtils.isEmpty(einkaufspreisString)
                 && ausgewaehlte_farbe == null
-                && stoffArt == StoffeContract.KATEGORIE_UNBEKANNT);
+                && stoffArt == StoffeTableInformation.KATEGORIE_UNBEKANNT);
     }
 
     private void setIntegerValue(ContentValues stoffData, String textValue, String columnName)
@@ -291,7 +291,7 @@ public class StoffEditActivity extends AppCompatActivity implements LoaderManage
     {
         try
         {
-            getContentResolver().insert(StoffeContract.CONTENT_URI, stoffData);
+            getContentResolver().insert(StoffeTableInformation.CONTENT_URI, stoffData);
         } catch (IllegalArgumentException argEx)
         {
             Log.e(LOG_TAG, "Fehler beim Speichern eines neuen Stoffes", argEx);
@@ -352,8 +352,8 @@ public class StoffEditActivity extends AppCompatActivity implements LoaderManage
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle)
     {
         return new CursorLoader(this,
-                (stoffContentUri != null ? stoffContentUri: StoffeContract.CONTENT_URI),
-                StoffeContract.ALL_COLUMNS,
+                (stoffContentUri != null ? stoffContentUri: StoffeTableInformation.CONTENT_URI),
+                StoffeTableInformation.ALL_COLUMNS,
                 null,
                 null,
                 null);
@@ -380,22 +380,22 @@ public class StoffEditActivity extends AppCompatActivity implements LoaderManage
             farbauswahl.setSelectedColor(Color.parseColor(ausgewaehlte_farbe));
 
             switch (stoff.getKategorie()) {
-                case StoffeContract.KATEGORIE_BAUMWOLLE:
+                case StoffeTableInformation.KATEGORIE_BAUMWOLLE:
                     stoffartSpinner.setSelection(1);
                     break;
-                case StoffeContract.KATEGORIE_JERSEY:
+                case StoffeTableInformation.KATEGORIE_JERSEY:
                     stoffartSpinner.setSelection(2);
                     break;
-                case StoffeContract.KATEGORIE_LEDER:
+                case StoffeTableInformation.KATEGORIE_LEDER:
                     stoffartSpinner.setSelection(3);
                     break;
-                case StoffeContract.KATEGORIE_JEANS:
+                case StoffeTableInformation.KATEGORIE_JEANS:
                     stoffartSpinner.setSelection(4);
                     break;
-                case StoffeContract.KATEGORIE_SWEAT:
+                case StoffeTableInformation.KATEGORIE_SWEAT:
                     stoffartSpinner.setSelection(5);
                     break;
-                case StoffeContract.KATEGORIE_INTERLOCK:
+                case StoffeTableInformation.KATEGORIE_INTERLOCK:
                     stoffartSpinner.setSelection(6);
                     break;
                 default:

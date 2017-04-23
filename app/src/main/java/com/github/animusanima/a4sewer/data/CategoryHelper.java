@@ -2,7 +2,7 @@ package com.github.animusanima.a4sewer.data;
 
 import java.util.HashMap;
 
-import com.github.animusanima.a4sewer.db.stoffe.StoffeContract;
+import com.github.animusanima.a4sewer.db.stoffe.StoffeTableInformation;
 
 public class CategoryHelper
 {
@@ -10,13 +10,13 @@ public class CategoryHelper
 
     static
     {
-        CATEGORY_MAP.put(StoffeContract.KATEGORIE_UNBEKANNT, "Unbekannt");
-        CATEGORY_MAP.put(StoffeContract.KATEGORIE_BAUMWOLLE, "Baumwolle");
-        CATEGORY_MAP.put(StoffeContract.KATEGORIE_JERSEY, "Jersey");
-        CATEGORY_MAP.put(StoffeContract.KATEGORIE_LEDER, "Leder");
-        CATEGORY_MAP.put(StoffeContract.KATEGORIE_JEANS, "Jeans");
-        CATEGORY_MAP.put(StoffeContract.KATEGORIE_SWEAT, "Sweat");
-        CATEGORY_MAP.put(StoffeContract.KATEGORIE_INTERLOCK, "Interlock");
+        CATEGORY_MAP.put(StoffeTableInformation.KATEGORIE_UNBEKANNT, "Unbekannt");
+        CATEGORY_MAP.put(StoffeTableInformation.KATEGORIE_BAUMWOLLE, "Baumwolle");
+        CATEGORY_MAP.put(StoffeTableInformation.KATEGORIE_JERSEY, "Jersey");
+        CATEGORY_MAP.put(StoffeTableInformation.KATEGORIE_LEDER, "Leder");
+        CATEGORY_MAP.put(StoffeTableInformation.KATEGORIE_JEANS, "Jeans");
+        CATEGORY_MAP.put(StoffeTableInformation.KATEGORIE_SWEAT, "Sweat");
+        CATEGORY_MAP.put(StoffeTableInformation.KATEGORIE_INTERLOCK, "Interlock");
     }
 
     public static String getCategoryByID(int ID)

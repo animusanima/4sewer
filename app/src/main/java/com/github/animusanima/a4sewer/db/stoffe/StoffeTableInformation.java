@@ -4,7 +4,7 @@ import android.content.ContentResolver;
 import android.net.Uri;
 import android.provider.BaseColumns;
 
-public final class StoffeContract implements BaseColumns
+public final class StoffeTableInformation implements BaseColumns
 {
     public static final String CONTENT_AUTHORITY = "com.github.animusanima.a4sewer";
     public static final Uri BASE_CONTENT_URI = Uri.parse("content://" + CONTENT_AUTHORITY);
@@ -18,7 +18,7 @@ public final class StoffeContract implements BaseColumns
     public static final String CONTENT_ITEM_TYPE =
             ContentResolver.CURSOR_ITEM_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_STOFFE;
 
-    private StoffeContract() {}
+    private StoffeTableInformation() {}
 
     public final static String TABLE_NAME = "stoffe";
 
@@ -30,12 +30,14 @@ public final class StoffeContract implements BaseColumns
     public final static String COLUMN_STOFFE_KATEGORIE = "kategorie";
     public final static String COLUMN_STOFFE_FARBE = "farbe";
     public final static String COLUMN_STOFFE_EINKAUFSPREIS = "einkaufspreis";
+    public final static String COLUMN_STOFFE_ANZAHL = "anzahl";
 
     public final static String[] ALL_COLUMNS = new String[] {_ID, COLUMN_STOFFE_NAME, COLUMN_STOFFE_HERSTELLER,
             COLUMN_STOFFE_LAENGE, COLUMN_STOFFE_BREITE, COLUMN_STOFFE_KATEGORIE, COLUMN_STOFFE_FARBE,
-            COLUMN_STOFFE_EINKAUFSPREIS};
+            COLUMN_STOFFE_EINKAUFSPREIS, COLUMN_STOFFE_ANZAHL};
 
-    public final static String[] FILTER_COLUMNS = new String[] {COLUMN_STOFFE_NAME, COLUMN_STOFFE_HERSTELLER};
+    public final static String[] FILTER_COLUMNS = new String[] {COLUMN_STOFFE_NAME, COLUMN_STOFFE_HERSTELLER,
+            COLUMN_STOFFE_KATEGORIE};
 
     public final static int KATEGORIE_UNBEKANNT = 0;
     public final static int KATEGORIE_BAUMWOLLE = 1;
