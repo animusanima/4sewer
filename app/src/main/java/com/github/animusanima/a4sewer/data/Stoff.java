@@ -6,12 +6,12 @@ import com.github.animusanima.a4sewer.db.stoffe.StoffeTableInformation;
 
 public class Stoff
 {
-    private String name, hersteller, farbe;
-    private int laenge, breite, kategorie, anzahl;
+    private String name, hersteller, farbe, kategorie;
+    private int laenge, breite,  anzahl;
     private double einkaufspreis;
 
     public Stoff(String name, String hersteller,
-                 int laenge, int breite, int kategorie, String farbe,
+                 int laenge, int breite, String kategorie, String farbe,
                  double einkaufspreis, int anzahl)
     {
         this.name = name;
@@ -41,7 +41,7 @@ public class Stoff
         this.hersteller = cursor.getString(herstellerColumnIndex);
         this.laenge = cursor.getInt(laengeColumnIndex);
         this.breite = cursor.getInt(breiteColumnIndex);
-        this.kategorie = cursor.getInt(kategorieColumnIndex);
+        this.kategorie = cursor.getString(kategorieColumnIndex);
         this.einkaufspreis = cursor.getDouble(einkaufspreisColumnIndex);
         this.farbe = cursor.getString(farbeColumnIndex);
         this.anzahl = cursor.getInt(anzahlColumnIndex);
@@ -62,7 +62,7 @@ public class Stoff
         return breite;
     }
 
-    public int getKategorie()
+    public String getKategorie()
     {
         return kategorie;
     }

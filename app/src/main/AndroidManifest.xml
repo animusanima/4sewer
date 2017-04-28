@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="com.github.animusanima.a4sewer">
+    package="com.github.animusanima.a4sewer">
 
     <application
         android:allowBackup="true"
@@ -9,7 +9,6 @@
         android:roundIcon="@drawable/cat_baby_body"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
         <provider
             android:name=".db.stoffe.StoffProvider"
             android:authorities="com.github.animusanima.a4sewer"
@@ -19,10 +18,10 @@
             android:name=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-                <category android:name="android.intent.category.LAUNCHER"/>
-            </intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
             </intent-filter>
@@ -34,18 +33,16 @@
                 android:name="android.app.searchable"
                 android:resource="@xml/searchable_stoff" />
         </activity>
-
         <activity
             android:name=".Stoffe.StoffActivity"
-            android:label="@string/title_activity_stoff">
-        </activity>
+            android:label="@string/title_activity_stoff"></activity>
         <activity
             android:name=".about.AboutActivity"
-            android:label="@string/title_activity_about">
-        </activity>
+            android:label="@string/title_activity_about"></activity>
         <activity
-            android:name=".Stoffe.StoffEditActivity">
-        </activity>
+            android:name=".Stoffe.ScrollingClothEditActivity"
+            android:label="@string/title_activity_scrolling"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

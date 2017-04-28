@@ -45,7 +45,7 @@ public class StoffCursorAdapter extends CursorAdapter
 
         nameTextView.setText(stoff.getName());
         herstellerTextView.setText(stoff.getHersteller());
-        kategorieTextView.setText(CategoryHelper.getCategoryByID(stoff.getKategorie()));
+        kategorieTextView.setText(stoff.getKategorie());
     }
 
     @Override

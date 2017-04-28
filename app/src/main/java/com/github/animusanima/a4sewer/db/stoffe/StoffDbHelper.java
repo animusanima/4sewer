@@ -27,7 +27,7 @@ public class StoffDbHelper extends SQLiteOpenHelper
                         "(%s INTEGER PRIMARY KEY AUTOINCREMENT, " + // ID
                         "%s TEXT NOT NULL, " + // NAME
                         "%s TEXT NOT NULL, " + // HERSTELLER
-                        "%s INTEGER NOT NULL, " + // KATEGORIE
+                        "%s TEXT NOT NULL, " + // KATEGORIE
                         "%s TEXT, " + // FARBE
                         "%s INTEGER, " + // LAENGE
                         "%s INTEGER, " + // BREITE

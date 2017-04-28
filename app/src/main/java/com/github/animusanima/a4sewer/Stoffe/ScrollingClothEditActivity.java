@@ -10,14 +10,14 @@ import android.content.Loader;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.net.Uri;
-import android.support.annotation.ColorInt;
-import android.support.v4.app.NavUtils;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.annotation.ColorInt;
+import android.support.design.widget.FloatingActionButton;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
-import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
@@ -25,32 +25,34 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
 
-import com.thebluealliance.spectrum.SpectrumPalette;
-
 import com.github.animusanima.a4sewer.R;
 import com.github.animusanima.a4sewer.data.CategoryHelper;
 import com.github.animusanima.a4sewer.data.Stoff;
 import com.github.animusanima.a4sewer.db.stoffe.StoffeTableInformation;
+import com.thebluealliance.spectrum.SpectrumPalette;
 
-public class StoffEditActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>
+public class ScrollingClothEditActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>
 {
-    private final String LOG_TAG = StoffEditActivity.class.getSimpleName();
+    private final String LOG_TAG = ScrollingClothEditActivity.class.getSimpleName();
 
     private EditText nameEditText;
     private EditText herstellerEditText;
     private EditText laengeEditText;
     private EditText breiteEditText;
     private EditText einkaufspreisEditText;
+    private EditText anzahlEditText;
     private Spinner stoffartSpinner;
     private SpectrumPalette farbauswahl;
 
-    private final int EDIT_STOFF_CURSOR_LOADER_ID = 0;
+    private final int EDIT_STOFF_CURSOR_LOADER_ID = 1;
 
     private Uri stoffContentUri;
 
     private String ausgewaehlte_farbe = null;
 
     private Intent callingIntent;
+
+    FloatingActionButton saveButton, deleteButton;
 
     /**
      * 0 = unbekannter Stoff,
@@ -74,20 +76,38 @@ public class StoffEditActivity extends AppCompatActivity implements LoaderManage
     };
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_stoff_edit);
+        setContentView(R.layout.activity_scrolling);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
         callingIntent = getIntent();
         stoffContentUri = callingIntent.getData();
 
+        saveButton = (FloatingActionButton) findViewById(R.id.action_save);
+        saveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                stoffSpeichern();
+                finish();
+            }
+        });
+
+        deleteButton = (FloatingActionButton) findViewById(R.id.action_delete);
+        deleteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showDeleteConfirmationDialog();
+            }
+        });
+
         if (stoffContentUri == null)
         {
             setTitle(getString(R.string.stoff_neu));
-            invalidateOptionsMenu();
         } else {
             setTitle(getString(R.string.stoff_bearbeiten));
+            deleteButton.setVisibility(View.VISIBLE);
             getLoaderManager().initLoader(EDIT_STOFF_CURSOR_LOADER_ID, null, this);
         }
 
@@ -96,6 +116,8 @@ public class StoffEditActivity extends AppCompatActivity implements LoaderManage
         laengeEditText = (EditText) findViewById(R.id.edit_laenge);
         breiteEditText = (EditText) findViewById(R.id.edit_breite);
         einkaufspreisEditText = (EditText) findViewById(R.id.edit_einkaufspreis);
+        anzahlEditText = (EditText) findViewById(R.id.edit_anzahl);
+
         stoffartSpinner = (Spinner) findViewById(R.id.spinner_stoffart);
         farbauswahl = (SpectrumPalette) findViewById(R.id.farb_auswahl);
 
@@ -186,41 +208,7 @@ public class StoffEditActivity extends AppCompatActivity implements LoaderManage
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         super.onPrepareOptionsMenu(menu);
-        if (stoffContentUri == null) {
-            MenuItem menuItem = menu.findItem(R.id.action_delete);
-            menuItem.setVisible(false);
-        }
         return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_save:
-                stoffSpeichern();
-                finish();
-                return true;
-            case R.id.action_delete:
-                showDeleteConfirmationDialog();
-                return true;
-            case android.R.id.home:
-                if (!stoffWasChanged) {
-                    NavUtils.navigateUpFromSameTask(StoffEditActivity.this);
-                    return true;
-                }
-
-                DialogInterface.OnClickListener discardButtonClickListener =
-                        new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                NavUtils.navigateUpFromSameTask(StoffEditActivity.this);
-                            }
-                        };
-
-                showUnsavedChangesDialog(discardButtonClickListener);
-                return true;
-        }
-        return super.onOptionsItemSelected(item);
     }
 
     private void stoffSpeichern()
@@ -230,8 +218,10 @@ public class StoffEditActivity extends AppCompatActivity implements LoaderManage
         String laengeString = laengeEditText.getText().toString().trim();
         String breiteString = breiteEditText.getText().toString().trim();
         String einkaufspreisString = einkaufspreisEditText.getText().toString().trim();
+        String anzahlString = anzahlEditText.getText().toString().trim();
 
-        if ( noChangesWhereMade(nameString, herstellerString, laengeString, breiteString, einkaufspreisString) )
+        if ( noChangesWhereMade(nameString, herstellerString, laengeString,
+                breiteString, einkaufspreisString, anzahlString) )
         {
             return;
         }
@@ -239,11 +229,12 @@ public class StoffEditActivity extends AppCompatActivity implements LoaderManage
         ContentValues stoffdata = new ContentValues();
         stoffdata.put(StoffeTableInformation.COLUMN_STOFFE_NAME, nameString);
         stoffdata.put(StoffeTableInformation.COLUMN_STOFFE_HERSTELLER, herstellerString);
-        stoffdata.put(StoffeTableInformation.COLUMN_STOFFE_KATEGORIE, stoffArt);
+        stoffdata.put(StoffeTableInformation.COLUMN_STOFFE_KATEGORIE, CategoryHelper.getCategoryByID(stoffArt));
         stoffdata.put(StoffeTableInformation.COLUMN_STOFFE_FARBE, ausgewaehlte_farbe);
         setDoubleValue(stoffdata, einkaufspreisString, StoffeTableInformation.COLUMN_STOFFE_EINKAUFSPREIS);
         setIntegerValue(stoffdata, laengeString, StoffeTableInformation.COLUMN_STOFFE_LAENGE);
         setIntegerValue(stoffdata, breiteString, StoffeTableInformation.COLUMN_STOFFE_BREITE);
+        setIntegerValue(stoffdata, anzahlString, StoffeTableInformation.COLUMN_STOFFE_ANZAHL);
 
         if (stoffContentUri == null)
         {
@@ -255,7 +246,9 @@ public class StoffEditActivity extends AppCompatActivity implements LoaderManage
         }
     }
 
-    private boolean noChangesWhereMade(String nameString, String herstellerString, String laengeString, String breiteString, String einkaufspreisString)
+    private boolean noChangesWhereMade(String nameString, String herstellerString,
+                                       String laengeString, String breiteString,
+                                       String einkaufspreisString, String anzahlString)
     {
         return (stoffContentUri == null
                 && TextUtils.isEmpty(nameString)
@@ -263,6 +256,7 @@ public class StoffEditActivity extends AppCompatActivity implements LoaderManage
                 && TextUtils.isEmpty(laengeString)
                 && TextUtils.isEmpty(breiteString)
                 && TextUtils.isEmpty(einkaufspreisString)
+                && TextUtils.isEmpty(anzahlString)
                 && ausgewaehlte_farbe == null
                 && stoffArt == StoffeTableInformation.KATEGORIE_UNBEKANNT);
     }
@@ -348,9 +342,11 @@ public class StoffEditActivity extends AppCompatActivity implements LoaderManage
         finish();
     }
 
+
     @Override
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle)
     {
+        Log.d(LOG_TAG, "Inside onCreateLoader");
         return new CursorLoader(this,
                 (stoffContentUri != null ? stoffContentUri: StoffeTableInformation.CONTENT_URI),
                 StoffeTableInformation.ALL_COLUMNS,
@@ -362,12 +358,16 @@ public class StoffEditActivity extends AppCompatActivity implements LoaderManage
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor)
     {
+        Log.d(LOG_TAG, "Inside onLoadFinished");
         if (cursor == null || cursor.getCount() < 1) {
             return;
         }
 
+        Log.d(LOG_TAG, "Inside onLoadFinished: Before moveToFirst");
         if (cursor.moveToFirst())
         {
+            Log.d(LOG_TAG, "Inside onLoadFinished: Inside moveToFirst");
+
             Stoff stoff = new Stoff(cursor);
 
             nameEditText.setText(stoff.getName());
@@ -375,11 +375,13 @@ public class StoffEditActivity extends AppCompatActivity implements LoaderManage
             laengeEditText.setText(String.valueOf(stoff.getLaenge()));
             breiteEditText.setText(String.valueOf(stoff.getBreite()));
             einkaufspreisEditText.setText(String.valueOf(stoff.getEinkaufspreis()));
+            anzahlEditText.setText(String.valueOf(stoff.getAnzahl()));
 
             ausgewaehlte_farbe = stoff.getFarbe();
             farbauswahl.setSelectedColor(Color.parseColor(ausgewaehlte_farbe));
 
-            switch (stoff.getKategorie()) {
+            int kategorie = CategoryHelper.getIDByCategory(stoff.getKategorie());
+            switch (kategorie) {
                 case StoffeTableInformation.KATEGORIE_BAUMWOLLE:
                     stoffartSpinner.setSelection(1);
                     break;
@@ -413,15 +415,8 @@ public class StoffEditActivity extends AppCompatActivity implements LoaderManage
         laengeEditText.setText("");
         breiteEditText.setText("");
         einkaufspreisEditText.setText("");
+        anzahlEditText.setText("");
         stoffartSpinner.setSelection(0);
         ausgewaehlte_farbe = null;
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu)
-    {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_stoff_bearbeiten, menu);
-        return true;
     }
 }

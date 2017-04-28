@@ -1,18 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
-    android:padding="16dp"
-    tools:context=".Stoffe.StoffEditActivity">
-
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:scrollbars="horizontal|vertical">
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="com.github.animusanima.a4sewer.Stoffe.ScrollingClothEditActivity"
+    tools:showIn="@layout/activity_scrolling">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -20,10 +14,10 @@
         android:orientation="vertical"
         android:padding="16dp">
 
-    <EditText
-        android:id="@+id/edit_name"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        <EditText
+            android:id="@+id/edit_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:hint="@string/label_name"/>
 
         <EditText
@@ -52,7 +46,14 @@
             android:layout_marginTop="4dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/label_einkaufspreis"
+            android:hint="@string/label_einkaufspreis"/>
+
+        <EditText
+            android:id="@+id/edit_anzahl"
+            android:layout_marginTop="4dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/label_anzahl"
             android:layout_marginBottom="16dp"/>
 
         <Spinner
@@ -60,15 +61,12 @@
             android:layout_width="match_parent"
             android:layout_height="40dp"/>
 
-            <com.thebluealliance.spectrum.SpectrumPalette
-                android:id="@+id/farb_auswahl"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:spectrum_colors="@array/colors_array"
-                app:spectrum_columnCount="6"/>
+        <com.thebluealliance.spectrum.SpectrumPalette
+            android:id="@+id/farb_auswahl"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:spectrum_colors="@array/colors_array"/>
 
     </LinearLayout>
 
-    </ScrollView>
-
-</LinearLayout>
+</android.support.v4.widget.NestedScrollView>

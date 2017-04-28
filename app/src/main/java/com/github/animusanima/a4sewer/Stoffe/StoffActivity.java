@@ -20,7 +20,6 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.github.animusanima.a4sewer.R;
-import com.github.animusanima.a4sewer.data.CategoryHelper;
 import com.github.animusanima.a4sewer.db.stoffe.StoffCursorAdapter;
 import com.github.animusanima.a4sewer.db.stoffe.StoffeTableInformation;
 
@@ -46,7 +45,7 @@ public class StoffActivity extends AppCompatActivity implements LoaderManager.Lo
             @Override
             public void onClick(View v)
             {
-                Intent stoffIntent = new Intent(StoffActivity.this, StoffEditActivity.class);
+                Intent stoffIntent = new Intent(StoffActivity.this, ScrollingClothEditActivity.class);
                 startActivity(stoffIntent);
             }
         });
@@ -61,7 +60,7 @@ public class StoffActivity extends AppCompatActivity implements LoaderManager.Lo
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long ID)
             {
-                Intent stoffEditIntent = new Intent(StoffActivity.this, StoffEditActivity.class);
+                Intent stoffEditIntent = new Intent(StoffActivity.this, ScrollingClothEditActivity.class);
                 Uri stoffUri = ContentUris.withAppendedId(StoffeTableInformation.CONTENT_URI, ID);
                 stoffEditIntent.setData(stoffUri);
                 startActivity(stoffEditIntent);
@@ -103,17 +102,17 @@ public class StoffActivity extends AppCompatActivity implements LoaderManager.Lo
                     {
                         if ( builder.length() == 0 )
                         {
-                            builder.append(String.format("(%s like ?)", s));
+                            builder.append(String.format("%s like ?", s));
                         }
                         else
                         {
-                            builder.append(String.format(" OR (%s like ?) ", s));
+                            builder.append(String.format(" OR %s like ?", s));
                         }
                     }
                     Cursor filteredData = getContentResolver().query(StoffeTableInformation.CONTENT_URI,
                             StoffeTableInformation.ALL_COLUMNS,
                             builder.toString(),
-                            new String[]{searchTerm, String.valueOf(CategoryHelper.getIDByCategory(searchTerm))},
+                            new String[] { searchTerm },
                             null);
                     stoffAdapter.swapCursor(filteredData);
                     return true;
