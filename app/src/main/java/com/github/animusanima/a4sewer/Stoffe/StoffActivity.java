@@ -97,22 +97,25 @@ public class StoffActivity extends AppCompatActivity implements LoaderManager.Lo
                 else
                 {
                     StringBuilder builder = new StringBuilder();
-                    String searchTerm = "%" + text.toString() + "%";
+                    StringBuilder termBuilder = new StringBuilder();
+                    termBuilder = termBuilder.append("%")
+                                             .append(text.toString())
+                                             .append("%");
                     for ( String s : StoffeTableInformation.FILTER_COLUMNS )
                     {
                         if ( builder.length() == 0 )
                         {
-                            builder.append(String.format("%s like ?", s));
+                            builder.append(String.format("(%s like ?)", s));
                         }
                         else
                         {
-                            builder.append(String.format(" OR %s like ?", s));
+                            builder.append(String.format(" OR (%s like ?)", s));
                         }
                     }
                     Cursor filteredData = getContentResolver().query(StoffeTableInformation.CONTENT_URI,
                             StoffeTableInformation.ALL_COLUMNS,
                             builder.toString(),
-                            new String[] { searchTerm },
+                            new String[] { termBuilder.toString(), termBuilder.toString(), termBuilder.toString() },
                             null);
                     stoffAdapter.swapCursor(filteredData);
                     return true;

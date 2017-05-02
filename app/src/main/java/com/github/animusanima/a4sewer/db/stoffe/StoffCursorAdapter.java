@@ -27,7 +27,8 @@ public class StoffCursorAdapter extends CursorAdapter
     @Override
     public View newView(Context context, Cursor cursor, ViewGroup parent)
     {
-        return LayoutInflater.from(context).inflate(R.layout.stoff_item_layout, parent , false);
+        // stoff_item_layout
+        return LayoutInflater.from(context).inflate(R.layout.stoff_card_view, parent , false);
     }
 
     @Override
@@ -36,16 +37,14 @@ public class StoffCursorAdapter extends CursorAdapter
         TextView nameTextView = (TextView) view.findViewById(R.id.titel_view);
         TextView herstellerTextView = (TextView) view.findViewById(R.id.hersteller_view);
         TextView kategorieTextView = (TextView) view.findViewById(R.id.kategorie_view);
-        LinearLayout stoffEintrag = (LinearLayout) view.findViewById(R.id.stoff_item);
+        TextView anzahlTextView = (TextView) view.findViewById(R.id.anzahl_view);
 
         this.stoff = new Stoff(cursor);
-
-        String farbe = stoff.getFarbe();
-        stoffEintrag.setBackgroundColor(Color.parseColor(farbe));
 
         nameTextView.setText(stoff.getName());
         herstellerTextView.setText(stoff.getHersteller());
         kategorieTextView.setText(stoff.getKategorie());
+        anzahlTextView.setText(String.valueOf(stoff.getAnzahl()));
     }
 
     @Override

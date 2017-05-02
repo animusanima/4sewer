@@ -107,11 +107,8 @@ public class StoffProvider extends ContentProvider
     {
         validateStringParameter(contentValues, StoffeTableInformation.COLUMN_STOFFE_NAME);
         validateStringParameter(contentValues, StoffeTableInformation.COLUMN_STOFFE_HERSTELLER);
-        validateIntegerParameter(contentValues, StoffeTableInformation.COLUMN_STOFFE_KATEGORIE);
-        validateIntegerParameter(contentValues, StoffeTableInformation.COLUMN_STOFFE_LAENGE);
-        validateIntegerParameter(contentValues, StoffeTableInformation.COLUMN_STOFFE_BREITE);
-        validateStringParameter(contentValues, StoffeTableInformation.COLUMN_STOFFE_FARBE);
-        validateDoubleParameter(contentValues, StoffeTableInformation.COLUMN_STOFFE_EINKAUFSPREIS);
+        validateStringParameter(contentValues, StoffeTableInformation.COLUMN_STOFFE_KATEGORIE);
+        validateIntegerParameter(contentValues, StoffeTableInformation.COLUMN_STOFFE_ANZAHL);
     }
 
     private void validateStringParameter(ContentValues contentValues, String columnName)
@@ -174,11 +171,8 @@ public class StoffProvider extends ContentProvider
     {
         validateStringColumn(values, StoffeTableInformation.COLUMN_STOFFE_NAME);
         validateStringColumn(values, StoffeTableInformation.COLUMN_STOFFE_HERSTELLER);
-        validateStringColumn(values, StoffeTableInformation.COLUMN_STOFFE_FARBE);
         validateIntegerColumn(values, StoffeTableInformation.COLUMN_STOFFE_KATEGORIE);
-        validateIntegerColumn(values, StoffeTableInformation.COLUMN_STOFFE_LAENGE);
-        validateIntegerColumn(values, StoffeTableInformation.COLUMN_STOFFE_BREITE);
-        validateDoubleColumn(values, StoffeTableInformation.COLUMN_STOFFE_EINKAUFSPREIS);
+        validateIntegerColumn(values, StoffeTableInformation.COLUMN_STOFFE_ANZAHL);
     }
 
     private void validateStringColumn(ContentValues values, String columnName)
