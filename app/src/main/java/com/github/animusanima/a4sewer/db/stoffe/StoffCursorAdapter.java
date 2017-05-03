@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.CursorAdapter;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -38,6 +39,8 @@ public class StoffCursorAdapter extends CursorAdapter
         TextView herstellerTextView = (TextView) view.findViewById(R.id.hersteller_view);
         TextView kategorieTextView = (TextView) view.findViewById(R.id.kategorie_view);
         TextView anzahlTextView = (TextView) view.findViewById(R.id.anzahl_view);
+        CheckBox panelView = (CheckBox) view.findViewById(R.id.panel_view);
+        CheckBox musterView = (CheckBox) view.findViewById(R.id.muster_view);
 
         this.stoff = new Stoff(cursor);
 
@@ -45,6 +48,9 @@ public class StoffCursorAdapter extends CursorAdapter
         herstellerTextView.setText(stoff.getHersteller());
         kategorieTextView.setText(stoff.getKategorie());
         anzahlTextView.setText(String.valueOf(stoff.getAnzahl()));
+
+        panelView.setChecked(stoff.isPanel());
+        musterView.setChecked(stoff.isMuster());
     }
 
     @Override

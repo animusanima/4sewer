@@ -9,9 +9,7 @@
         android:id="@+id/stoff_liste"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/search_bar"
-        android:clickable="true"
-        android:focusable="true">
+        android:layout_below="@+id/search_bar">
     </ListView>
 
     <android.support.design.widget.FloatingActionButton
@@ -20,6 +18,6 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
-        app:srcCompat="@drawable/ic_add_white_36dp" />
+        app:srcCompat="@drawable/ic_add_white_24dp" />
 
 </FrameLayout>

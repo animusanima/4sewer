@@ -53,19 +53,31 @@
             android:layout_marginTop="4dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/label_anzahl"
-            android:layout_marginBottom="16dp"/>
+            android:hint="@string/label_anzahl"/>
+
+        <EditText
+            android:id="@+id/edit_farbe"
+            android:layout_marginTop="4dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/label_farbe"/>
 
         <Spinner
             android:id="@+id/spinner_stoffart"
             android:layout_width="match_parent"
-            android:layout_height="40dp"/>
+            android:layout_height="60dp"
+            android:layout_marginBottom="16dp"/>
 
-        <com.thebluealliance.spectrum.SpectrumPalette
-            android:id="@+id/farb_auswahl"
-            android:layout_width="match_parent"
+
+        <CheckBox
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:spectrum_colors="@array/colors_array"/>
+            android:text="Panel" />
+
+        <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Muster" />
 
     </LinearLayout>
 

@@ -11,17 +11,16 @@ import android.database.Cursor;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.ColorInt;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Spinner;
 
@@ -29,11 +28,15 @@ import com.github.animusanima.a4sewer.R;
 import com.github.animusanima.a4sewer.data.CategoryHelper;
 import com.github.animusanima.a4sewer.data.Stoff;
 import com.github.animusanima.a4sewer.db.stoffe.StoffeTableInformation;
-import com.thebluealliance.spectrum.SpectrumPalette;
+import com.github.animusanima.a4sewer.model.ClothEditingModel;
 
 public class ScrollingClothEditActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>
 {
     private final String LOG_TAG = ScrollingClothEditActivity.class.getSimpleName();
+
+    private ClothEditingModel model;
+
+    private FloatingActionButton saveButton, deleteButton;
 
     private EditText nameEditText;
     private EditText herstellerEditText;
@@ -41,39 +44,10 @@ public class ScrollingClothEditActivity extends AppCompatActivity implements Loa
     private EditText breiteEditText;
     private EditText einkaufspreisEditText;
     private EditText anzahlEditText;
+    private EditText farbeEditText;
     private Spinner stoffartSpinner;
-    private SpectrumPalette farbauswahl;
-
-    private final int EDIT_STOFF_CURSOR_LOADER_ID = 1;
-
-    private Uri stoffContentUri;
-
-    private String ausgewaehlte_farbe = null;
-
-    private Intent callingIntent;
-
-    FloatingActionButton saveButton, deleteButton;
-
-    /**
-     * 0 = unbekannter Stoff,
-     * 1 = Baumwolle,
-     * 2 = Jersey,
-     * 3 = Leder,
-     * 4 = Jeans,
-     * 5 = Sweat,
-     * 6 = Interlock
-     */
-    private int stoffArt = StoffeTableInformation.KATEGORIE_UNBEKANNT;
-
-    private boolean stoffWasChanged = false;
-
-    private View.OnTouchListener touchListener = new View.OnTouchListener() {
-        @Override
-        public boolean onTouch(View view, MotionEvent motionEvent) {
-            stoffWasChanged = true;
-            return false;
-        }
-    };
+    private CheckBox panelCheckBox;
+    private CheckBox musterCheckBox;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,8 +56,8 @@ public class ScrollingClothEditActivity extends AppCompatActivity implements Loa
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        callingIntent = getIntent();
-        stoffContentUri = callingIntent.getData();
+        Intent callingIntent = getIntent();
+        model = new ClothEditingModel(callingIntent);
 
         saveButton = (FloatingActionButton) findViewById(R.id.action_save);
         saveButton.setOnClickListener(new View.OnClickListener() {
@@ -102,13 +76,13 @@ public class ScrollingClothEditActivity extends AppCompatActivity implements Loa
             }
         });
 
-        if (stoffContentUri == null)
+        if (!model.isExistingCloth())
         {
             setTitle(getString(R.string.stoff_neu));
         } else {
             setTitle(getString(R.string.stoff_bearbeiten));
             deleteButton.setVisibility(View.VISIBLE);
-            getLoaderManager().initLoader(EDIT_STOFF_CURSOR_LOADER_ID, null, this);
+            getLoaderManager().initLoader(model.getCursorLoaderID(), null, this);
         }
 
         nameEditText = (EditText) findViewById(R.id.edit_name);
@@ -117,26 +91,18 @@ public class ScrollingClothEditActivity extends AppCompatActivity implements Loa
         breiteEditText = (EditText) findViewById(R.id.edit_breite);
         einkaufspreisEditText = (EditText) findViewById(R.id.edit_einkaufspreis);
         anzahlEditText = (EditText) findViewById(R.id.edit_anzahl);
-
+        farbeEditText = (EditText) findViewById(R.id.edit_farbe);
         stoffartSpinner = (Spinner) findViewById(R.id.spinner_stoffart);
-        farbauswahl = (SpectrumPalette) findViewById(R.id.farb_auswahl);
+        panelCheckBox = (CheckBox) findViewById(R.id.panel_view);
+        musterCheckBox = (CheckBox) findViewById(R.id.muster_view);
 
-        farbauswahl.setOnColorSelectedListener(new SpectrumPalette.OnColorSelectedListener()
-        {
-            @Override
-            public void onColorSelected(@ColorInt int color)
-            {
-                ausgewaehlte_farbe = "#" + Integer.toHexString(color);
-            }
-        });
-
-        nameEditText.setOnTouchListener(touchListener);
-        herstellerEditText.setOnTouchListener(touchListener);
-        laengeEditText.setOnTouchListener(touchListener);
-        breiteEditText.setOnTouchListener(touchListener);
-        einkaufspreisEditText.setOnTouchListener(touchListener);
-        stoffartSpinner.setOnTouchListener(touchListener);
-        farbauswahl.setOnTouchListener(touchListener);
+        nameEditText.setOnTouchListener(model.getTouchListener());
+        herstellerEditText.setOnTouchListener(model.getTouchListener());
+        laengeEditText.setOnTouchListener(model.getTouchListener());
+        breiteEditText.setOnTouchListener(model.getTouchListener());
+        einkaufspreisEditText.setOnTouchListener(model.getTouchListener());
+        stoffartSpinner.setOnTouchListener(model.getTouchListener());
+        farbeEditText.setOnTouchListener(model.getTouchListener());
 
         setupSpinner();
     }
@@ -157,13 +123,13 @@ public class ScrollingClothEditActivity extends AppCompatActivity implements Loa
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String selection = (String) parent.getItemAtPosition(position);
                 if (!TextUtils.isEmpty(selection)) {
-                    stoffArt = CategoryHelper.getIDByCategory(selection);
+                    model.updateCategory(CategoryHelper.getIDByCategory(selection));
                 }
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-                stoffArt = StoffeTableInformation.KATEGORIE_UNBEKANNT;
+                model.updateCategory(StoffeTableInformation.KATEGORIE_UNBEKANNT);
             }
         });
 
@@ -171,7 +137,7 @@ public class ScrollingClothEditActivity extends AppCompatActivity implements Loa
 
     @Override
     public void onBackPressed() {
-        if (!stoffWasChanged) {
+        if (!model.isDataWasChanged()) {
             super.onBackPressed();
             return;
         }
@@ -219,6 +185,9 @@ public class ScrollingClothEditActivity extends AppCompatActivity implements Loa
         String breiteString = breiteEditText.getText().toString().trim();
         String einkaufspreisString = einkaufspreisEditText.getText().toString().trim();
         String anzahlString = anzahlEditText.getText().toString().trim();
+        String farbeString = farbeEditText.getText().toString().trim();
+        Integer panelValue = panelCheckBox.isChecked() ? 1 : 0;
+        Integer musterValue = musterCheckBox.isChecked() ? 1 : 0;
 
         if ( noChangesWhereMade(nameString, herstellerString, laengeString,
                 breiteString, einkaufspreisString, anzahlString) )
@@ -229,20 +198,22 @@ public class ScrollingClothEditActivity extends AppCompatActivity implements Loa
         ContentValues stoffdata = new ContentValues();
         stoffdata.put(StoffeTableInformation.COLUMN_STOFFE_NAME, nameString);
         stoffdata.put(StoffeTableInformation.COLUMN_STOFFE_HERSTELLER, herstellerString);
-        stoffdata.put(StoffeTableInformation.COLUMN_STOFFE_KATEGORIE, CategoryHelper.getCategoryByID(stoffArt));
-        stoffdata.put(StoffeTableInformation.COLUMN_STOFFE_FARBE, ausgewaehlte_farbe);
+        stoffdata.put(StoffeTableInformation.COLUMN_STOFFE_KATEGORIE, CategoryHelper.getCategoryByID(model.getCategory()));
+        stoffdata.put(StoffeTableInformation.COLUMN_STOFFE_FARBE, farbeString);
         setDoubleValue(stoffdata, einkaufspreisString, StoffeTableInformation.COLUMN_STOFFE_EINKAUFSPREIS);
         setIntegerValue(stoffdata, laengeString, StoffeTableInformation.COLUMN_STOFFE_LAENGE);
         setIntegerValue(stoffdata, breiteString, StoffeTableInformation.COLUMN_STOFFE_BREITE);
         setIntegerValue(stoffdata, anzahlString, StoffeTableInformation.COLUMN_STOFFE_ANZAHL);
+        setIntegerValue(stoffdata, String.valueOf(panelValue), StoffeTableInformation.COLUMN_STOFFE_PANEL);
+        setIntegerValue(stoffdata, String.valueOf(musterValue), StoffeTableInformation.COLUMN_STOFFE_MUSTER);
 
-        if (stoffContentUri == null)
+        if (!model.isExistingCloth())
         {
             neuenStoffSpeichern(stoffdata);
         }
         else
         {
-            stoffAktualisieren(stoffdata, stoffContentUri);
+            stoffAktualisieren(stoffdata, model.getExistingClothData());
         }
     }
 
@@ -250,15 +221,15 @@ public class ScrollingClothEditActivity extends AppCompatActivity implements Loa
                                        String laengeString, String breiteString,
                                        String einkaufspreisString, String anzahlString)
     {
-        return (stoffContentUri == null
+        return (!model.isExistingCloth()
                 && TextUtils.isEmpty(nameString)
                 && TextUtils.isEmpty(herstellerString)
                 && TextUtils.isEmpty(laengeString)
                 && TextUtils.isEmpty(breiteString)
                 && TextUtils.isEmpty(einkaufspreisString)
                 && TextUtils.isEmpty(anzahlString)
-                && ausgewaehlte_farbe == null
-                && stoffArt == StoffeTableInformation.KATEGORIE_UNBEKANNT);
+                && model.getSelectedColor() == null
+                && model.isUnknownCategory());
     }
 
     private void setIntegerValue(ContentValues stoffData, String textValue, String columnName)
@@ -335,9 +306,9 @@ public class ScrollingClothEditActivity extends AppCompatActivity implements Loa
     private void loescheStoff()
     {
         // Do nothing if not in edit mode
-        if (stoffContentUri != null)
+        if (model.isExistingCloth())
         {
-            getContentResolver().delete(stoffContentUri, null, null);
+            getContentResolver().delete(model.getExistingClothData(), null, null);
         }
         finish();
     }
@@ -348,7 +319,7 @@ public class ScrollingClothEditActivity extends AppCompatActivity implements Loa
     {
         Log.d(LOG_TAG, "Inside onCreateLoader");
         return new CursorLoader(this,
-                (stoffContentUri != null ? stoffContentUri: StoffeTableInformation.CONTENT_URI),
+                (model.isExistingCloth() ? model.getExistingClothData() : StoffeTableInformation.CONTENT_URI),
                 StoffeTableInformation.ALL_COLUMNS,
                 null,
                 null,
@@ -376,9 +347,9 @@ public class ScrollingClothEditActivity extends AppCompatActivity implements Loa
             breiteEditText.setText(String.valueOf(stoff.getBreite()));
             einkaufspreisEditText.setText(String.valueOf(stoff.getEinkaufspreis()));
             anzahlEditText.setText(String.valueOf(stoff.getAnzahl()));
-
-            ausgewaehlte_farbe = stoff.getFarbe();
-            farbauswahl.setSelectedColor(Color.parseColor(ausgewaehlte_farbe));
+            farbeEditText.setText(stoff.getFarbe());
+            panelCheckBox.setChecked(stoff.isPanel());
+            musterCheckBox.setChecked(stoff.isMuster());
 
             int kategorie = CategoryHelper.getIDByCategory(stoff.getKategorie());
             switch (kategorie) {
@@ -417,6 +388,9 @@ public class ScrollingClothEditActivity extends AppCompatActivity implements Loa
         einkaufspreisEditText.setText("");
         anzahlEditText.setText("");
         stoffartSpinner.setSelection(0);
-        ausgewaehlte_farbe = null;
+        model.updateColor(null);
+        farbeEditText.setText("");
+        panelCheckBox.setChecked(false);
+        musterCheckBox.setChecked(false);
     }
 }

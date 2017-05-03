@@ -9,10 +9,11 @@ public class Stoff
     private String name, hersteller, farbe, kategorie;
     private int laenge, breite,  anzahl;
     private double einkaufspreis;
+    private boolean isPanel, isMuster;
 
     public Stoff(String name, String hersteller,
                  int laenge, int breite, String kategorie, String farbe,
-                 double einkaufspreis, int anzahl)
+                 double einkaufspreis, int anzahl, boolean isPanel, boolean isMuster)
     {
         this.name = name;
         this.hersteller = hersteller;
@@ -24,6 +25,9 @@ public class Stoff
 
         this.einkaufspreis = einkaufspreis;
         this.anzahl = anzahl;
+
+        this.isPanel = isPanel;
+        this.isMuster = isMuster;
     }
 
     public Stoff(Cursor cursor)
@@ -36,6 +40,8 @@ public class Stoff
         int einkaufspreisColumnIndex = cursor.getColumnIndex(StoffeTableInformation.COLUMN_STOFFE_EINKAUFSPREIS);
         int farbeColumnIndex = cursor.getColumnIndex(StoffeTableInformation.COLUMN_STOFFE_FARBE);
         int anzahlColumnIndex = cursor.getColumnIndex(StoffeTableInformation.COLUMN_STOFFE_ANZAHL);
+        int panelColumnIndex = cursor.getColumnIndex(StoffeTableInformation.COLUMN_STOFFE_PANEL);
+        int musterColumnIndex = cursor.getColumnIndex(StoffeTableInformation.COLUMN_STOFFE_MUSTER);
 
         this.name = cursor.getString(nameColumnIndex);
         this.hersteller = cursor.getString(herstellerColumnIndex);
@@ -45,6 +51,9 @@ public class Stoff
         this.einkaufspreis = cursor.getDouble(einkaufspreisColumnIndex);
         this.farbe = cursor.getString(farbeColumnIndex);
         this.anzahl = cursor.getInt(anzahlColumnIndex);
+        this.isPanel = cursor.getInt(panelColumnIndex) == 1;
+        this.isMuster = cursor.getInt(musterColumnIndex) == 1;
+
     }
 
     public String getHersteller()
@@ -84,5 +93,13 @@ public class Stoff
 
     public int getAnzahl() {
         return anzahl;
+    }
+
+    public boolean isPanel() {
+        return this.isPanel;
+    }
+
+    public boolean isMuster() {
+        return this.isMuster;
     }
 }

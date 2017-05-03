@@ -41,16 +41,17 @@
         android:layout_margin="@dimen/fab_margin"
         app:layout_anchor="@id/app_bar"
         app:layout_anchorGravity="bottom|end"
-        app:srcCompat="@drawable/ic_check_white_24dp" />
+        app:srcCompat="@drawable/ic_check_white_24dp"
+        android:theme="@style/Theme.AppCompat.Light" />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/action_delete"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="70dp"
         app:layout_anchor="@id/app_bar"
+        android:layout_margin="75dp"
         app:layout_anchorGravity="bottom|right"
         app:srcCompat="@drawable/ic_delete_white_24dp"
-        android:visibility="gone" />
+        android:theme="@style/Theme.AppCompat.Light" />
 
 </android.support.design.widget.CoordinatorLayout>
