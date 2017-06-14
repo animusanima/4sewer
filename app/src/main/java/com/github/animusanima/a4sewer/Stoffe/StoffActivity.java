@@ -19,12 +19,13 @@ import android.view.MenuInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.github.animusanima.a4sewer.R;
 import com.github.animusanima.a4sewer.db.stoffe.StoffCursorAdapter;
 import com.github.animusanima.a4sewer.db.stoffe.StoffeTableInformation;
 
-public class StoffActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>
+public class StoffActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>, AdapterView.OnItemClickListener
 {
     private final int STOFF_CURSOR_ID = 0;
 
@@ -55,20 +56,17 @@ public class StoffActivity extends AppCompatActivity implements LoaderManager.Lo
 
         ListView stoffView = (ListView) findViewById(R.id.stoff_liste);
         stoffView.setAdapter(stoffAdapter);
-
-        stoffView.setOnItemClickListener(new AdapterView.OnItemClickListener()
-        {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int position, long ID)
-            {
-                Intent stoffEditIntent = new Intent(StoffActivity.this, ScrollingClothEditActivity.class);
-                Uri stoffUri = ContentUris.withAppendedId(StoffeTableInformation.CONTENT_URI, ID);
-                stoffEditIntent.setData(stoffUri);
-                startActivity(stoffEditIntent);
-            }
-        });
+        stoffView.setOnItemClickListener(this);
 
         getLoaderManager().initLoader(STOFF_CURSOR_ID, null, this);
+    }
+
+    public void onItemClick(AdapterView<?> adapterView, View view, int position, long ID)
+    {
+        Intent stoffEditIntent = new Intent(StoffActivity.this, ScrollingClothEditActivity.class);
+        Uri stoffUri = ContentUris.withAppendedId(StoffeTableInformation.CONTENT_URI, ID);
+        stoffEditIntent.setData(stoffUri);
+        startActivity(stoffEditIntent);
     }
 
     @Override

@@ -70,11 +70,13 @@
 
 
         <CheckBox
+            android:id="@+id/panel_checkbox"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Panel" />
 
         <CheckBox
+            android:id="@+id/muster_checkbox"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Muster" />

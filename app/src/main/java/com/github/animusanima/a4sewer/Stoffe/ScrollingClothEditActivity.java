@@ -8,7 +8,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
-import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -93,8 +92,8 @@ public class ScrollingClothEditActivity extends AppCompatActivity implements Loa
         anzahlEditText = (EditText) findViewById(R.id.edit_anzahl);
         farbeEditText = (EditText) findViewById(R.id.edit_farbe);
         stoffartSpinner = (Spinner) findViewById(R.id.spinner_stoffart);
-        panelCheckBox = (CheckBox) findViewById(R.id.panel_view);
-        musterCheckBox = (CheckBox) findViewById(R.id.muster_view);
+        panelCheckBox = (CheckBox) findViewById(R.id.panel_checkbox);
+        musterCheckBox = (CheckBox) findViewById(R.id.muster_checkbox);
 
         nameEditText.setOnTouchListener(model.getTouchListener());
         herstellerEditText.setOnTouchListener(model.getTouchListener());
@@ -195,25 +194,29 @@ public class ScrollingClothEditActivity extends AppCompatActivity implements Loa
             return;
         }
 
-        ContentValues stoffdata = new ContentValues();
-        stoffdata.put(StoffeTableInformation.COLUMN_STOFFE_NAME, nameString);
-        stoffdata.put(StoffeTableInformation.COLUMN_STOFFE_HERSTELLER, herstellerString);
-        stoffdata.put(StoffeTableInformation.COLUMN_STOFFE_KATEGORIE, CategoryHelper.getCategoryByID(model.getCategory()));
-        stoffdata.put(StoffeTableInformation.COLUMN_STOFFE_FARBE, farbeString);
-        setDoubleValue(stoffdata, einkaufspreisString, StoffeTableInformation.COLUMN_STOFFE_EINKAUFSPREIS);
-        setIntegerValue(stoffdata, laengeString, StoffeTableInformation.COLUMN_STOFFE_LAENGE);
-        setIntegerValue(stoffdata, breiteString, StoffeTableInformation.COLUMN_STOFFE_BREITE);
-        setIntegerValue(stoffdata, anzahlString, StoffeTableInformation.COLUMN_STOFFE_ANZAHL);
-        setIntegerValue(stoffdata, String.valueOf(panelValue), StoffeTableInformation.COLUMN_STOFFE_PANEL);
-        setIntegerValue(stoffdata, String.valueOf(musterValue), StoffeTableInformation.COLUMN_STOFFE_MUSTER);
+        ContentValues stoffData = new ContentValues();
+        stoffData.put(StoffeTableInformation.COLUMN_STOFFE_NAME, nameString);
+        stoffData.put(StoffeTableInformation.COLUMN_STOFFE_HERSTELLER, herstellerString);
+        stoffData.put(StoffeTableInformation.COLUMN_STOFFE_KATEGORIE, CategoryHelper.getCategoryByID(model.getCategory()));
+        stoffData.put(StoffeTableInformation.COLUMN_STOFFE_FARBE, farbeString);
+        setDoubleValue(stoffData, einkaufspreisString, StoffeTableInformation.COLUMN_STOFFE_EINKAUFSPREIS);
+        setIntegerValue(stoffData, laengeString, StoffeTableInformation.COLUMN_STOFFE_LAENGE);
+        setIntegerValue(stoffData, breiteString, StoffeTableInformation.COLUMN_STOFFE_BREITE);
+        setIntegerValue(stoffData, anzahlString, StoffeTableInformation.COLUMN_STOFFE_ANZAHL);
+
+        //stoffData.put(StoffeTableInformation.COLUMN_STOFFE_PANEL, panelValue);
+        //stoffData.put(StoffeTableInformation.COLUMN_STOFFE_MUSTER, musterValue);
+
+        setIntegerValue(stoffData, String.valueOf(panelValue), StoffeTableInformation.COLUMN_STOFFE_PANEL);
+        setIntegerValue(stoffData, String.valueOf(musterValue), StoffeTableInformation.COLUMN_STOFFE_MUSTER);
 
         if (!model.isExistingCloth())
         {
-            neuenStoffSpeichern(stoffdata);
+            neuenStoffSpeichern(stoffData);
         }
         else
         {
-            stoffAktualisieren(stoffdata, model.getExistingClothData());
+            stoffAktualisieren(stoffData, model.getExistingClothData());
         }
     }
 

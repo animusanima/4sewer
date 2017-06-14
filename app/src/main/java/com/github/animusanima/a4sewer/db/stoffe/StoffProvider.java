@@ -125,13 +125,6 @@ public class StoffProvider extends ContentProvider
             throw new IllegalArgumentException(String.format("%s muss gefüllt sein", columnName));
     }
 
-    private void validateDoubleParameter(ContentValues contentValues, String columnName)
-    {
-        Double parameter = contentValues.getAsDouble(columnName);
-        if (parameter != null && parameter < 0.0)
-            throw new IllegalArgumentException(String.format("%s muss gefüllt sein", columnName));
-    }
-
     /**
      * Updates the data at the given selection and selection arguments, with the new ContentValues.
      */
@@ -191,16 +184,6 @@ public class StoffProvider extends ContentProvider
         {
             Integer value = values.getAsInteger(columnName);
             if (value == null || value < 0)
-                throw new IllegalArgumentException(String.format("Column %s requires a valid value", columnName));
-        }
-    }
-
-    private void validateDoubleColumn(ContentValues values, String columnName)
-    {
-        if (values.containsKey(columnName))
-        {
-            Double value = values.getAsDouble(columnName);
-            if (value == null || value < 0.0)
                 throw new IllegalArgumentException(String.format("Column %s requires a valid value", columnName));
         }
     }
