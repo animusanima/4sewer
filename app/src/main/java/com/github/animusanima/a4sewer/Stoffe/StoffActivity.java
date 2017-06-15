@@ -1,10 +1,12 @@
 package com.github.animusanima.a4sewer.Stoffe;
 
+import android.app.AlertDialog;
 import android.app.LoaderManager;
 import android.app.SearchManager;
 import android.content.ContentUris;
 import android.content.Context;
 import android.content.CursorLoader;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
@@ -25,7 +27,8 @@ import com.github.animusanima.a4sewer.R;
 import com.github.animusanima.a4sewer.db.stoffe.StoffCursorAdapter;
 import com.github.animusanima.a4sewer.db.stoffe.StoffeTableInformation;
 
-public class StoffActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>, AdapterView.OnItemClickListener
+public class StoffActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>,
+        AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener
 {
     private final int STOFF_CURSOR_ID = 0;
 
@@ -57,6 +60,7 @@ public class StoffActivity extends AppCompatActivity implements LoaderManager.Lo
         ListView stoffView = (ListView) findViewById(R.id.stoff_liste);
         stoffView.setAdapter(stoffAdapter);
         stoffView.setOnItemClickListener(this);
+        stoffView.setOnItemLongClickListener(this);
 
         getLoaderManager().initLoader(STOFF_CURSOR_ID, null, this);
     }
@@ -67,6 +71,39 @@ public class StoffActivity extends AppCompatActivity implements LoaderManager.Lo
         Uri stoffUri = ContentUris.withAppendedId(StoffeTableInformation.CONTENT_URI, ID);
         stoffEditIntent.setData(stoffUri);
         startActivity(stoffEditIntent);
+    }
+
+    @Override
+    public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long ID) {
+        showDeleteConfirmation(ID);
+        return true;
+    }
+
+    public void showDeleteConfirmation(final long ID)
+    {
+        // Create an AlertDialog.Builder and set the message, and click listeners
+        // for the postivie and negative buttons on the dialog.
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage(R.string.loeschen_dialog_nachricht);
+        builder.setPositiveButton(R.string.loeschen, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                Uri stoffUri = ContentUris.withAppendedId(StoffeTableInformation.CONTENT_URI, ID);
+                getContentResolver().delete(stoffUri, null, null);
+            }
+        });
+        builder.setNegativeButton(R.string.abbrechen, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                // User clicked the "Cancel" button, so dismiss the dialog
+                // and continue editing the pet.
+                if (dialog != null) {
+                    dialog.dismiss();
+                }
+            }
+        });
+
+        // Create and show the AlertDialog
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
     }
 
     @Override

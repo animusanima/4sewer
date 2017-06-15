@@ -86,7 +86,7 @@ public class StoffProvider extends ContentProvider
      */
     @Override
     public Uri insert(Uri uri, ContentValues contentValues) {
-        validateInsertValues(contentValues);
+        validateMandatoryFields(contentValues);
 
         // Create and/or open a database to read from it
         SQLiteDatabase db = dbHelper.getWritableDatabase();
@@ -103,7 +103,7 @@ public class StoffProvider extends ContentProvider
         return ContentUris.withAppendedId(uri, newID);
     }
 
-    private void validateInsertValues(ContentValues contentValues)
+    private void validateMandatoryFields(ContentValues contentValues)
     {
         validateStringParameter(contentValues, StoffeTableInformation.COLUMN_STOFFE_NAME);
         validateStringParameter(contentValues, StoffeTableInformation.COLUMN_STOFFE_HERSTELLER);
@@ -150,7 +150,7 @@ public class StoffProvider extends ContentProvider
         {
             return 0;
         }
-        validateUpdateValues(values);
+        validateMandatoryFields(values);
 
         SQLiteDatabase database = dbHelper.getWritableDatabase();
         int rowsAffected = database.update(StoffeTableInformation.TABLE_NAME, values, selection, selectionArgs);
@@ -158,34 +158,6 @@ public class StoffProvider extends ContentProvider
         if (rowsAffected >= 1)
             getContext().getContentResolver().notifyChange(uri, null);
         return rowsAffected;
-    }
-
-    private void validateUpdateValues(ContentValues values)
-    {
-        validateStringColumn(values, StoffeTableInformation.COLUMN_STOFFE_NAME);
-        validateStringColumn(values, StoffeTableInformation.COLUMN_STOFFE_HERSTELLER);
-        validateIntegerColumn(values, StoffeTableInformation.COLUMN_STOFFE_KATEGORIE);
-        validateIntegerColumn(values, StoffeTableInformation.COLUMN_STOFFE_ANZAHL);
-    }
-
-    private void validateStringColumn(ContentValues values, String columnName)
-    {
-        if (values.containsKey(columnName))
-        {
-            String value = values.getAsString(columnName);
-            if (value == null)
-                throw new IllegalArgumentException(String.format("Column %s requires a value", columnName));
-        }
-    }
-
-    private void validateIntegerColumn(ContentValues values, String columnName)
-    {
-        if (values.containsKey(columnName))
-        {
-            Integer value = values.getAsInteger(columnName);
-            if (value == null || value < 0)
-                throw new IllegalArgumentException(String.format("Column %s requires a valid value", columnName));
-        }
     }
 
     /**

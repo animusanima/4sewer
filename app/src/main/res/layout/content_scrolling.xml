@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.github.animusanima.a4sewer.Stoffe.ScrollingClothEditActivity"
     tools:showIn="@layout/activity_scrolling">
@@ -14,60 +14,103 @@
         android:orientation="vertical"
         android:padding="16dp">
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/label_name"
+            android:textAppearance="?android:textAppearanceLarge"/>
+
         <EditText
             android:id="@+id/edit_name"
             android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:layout_marginTop="4dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:hint="@string/label_name"/>
+            android:text="@string/label_hersteller"
+            android:textAppearance="?android:textAppearanceLarge"/>
 
         <EditText
             android:id="@+id/edit_hersteller"
-            android:layout_marginTop="4dp"
             android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:layout_marginTop="4dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:hint="@string/label_hersteller"/>
+            android:text="@string/label_laenge"
+            android:textAppearance="?android:textAppearanceLarge"/>
 
         <EditText
             android:id="@+id/edit_laenge"
-            android:layout_marginTop="4dp"
             android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:layout_marginTop="4dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:hint="@string/label_laenge"/>
+            android:text="@string/label_breite"
+            android:textAppearance="?android:textAppearanceLarge"/>
 
         <EditText
             android:id="@+id/edit_breite"
-            android:layout_marginTop="4dp"
             android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:layout_marginTop="4dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:hint="@string/label_breite"/>
+            android:text="@string/label_einkaufspreis"
+            android:textAppearance="?android:textAppearanceLarge"/>
 
         <EditText
             android:id="@+id/edit_einkaufspreis"
-            android:layout_marginTop="4dp"
             android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:layout_marginTop="4dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:hint="@string/label_einkaufspreis"/>
+            android:text="@string/label_anzahl"
+            android:textAppearance="?android:textAppearanceLarge"/>
 
         <EditText
             android:id="@+id/edit_anzahl"
             android:layout_marginTop="4dp"
             android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:layout_marginTop="4dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:hint="@string/label_anzahl"/>
+            android:text="@string/label_farbe"
+            android:textAppearance="?android:textAppearanceLarge"/>
 
         <EditText
             android:id="@+id/edit_farbe"
             android:layout_marginTop="4dp"
             android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:layout_marginTop="4dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:hint="@string/label_farbe"/>
+            android:text="@string/label_stoffart"
+            android:textAppearance="?android:textAppearanceLarge"/>
 
         <Spinner
             android:id="@+id/spinner_stoffart"
             android:layout_width="match_parent"
             android:layout_height="60dp"
-            android:layout_marginBottom="16dp"/>
-
+            android:layout_marginBottom="4dp"/>
 
         <CheckBox
             android:id="@+id/panel_checkbox"
@@ -80,6 +123,23 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Muster" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+        <ImageButton
+            android:id="@+id/action_save"
+            android:layout_width="120dp"
+            android:layout_height="60dp"
+            android:layout_margin="@dimen/fab_margin"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            app:srcCompat="@drawable/ic_check_white_24dp"
+            android:theme="@style/Theme.AppCompat.Light"
+            android:background="@color/DarkCyan" />
+
+        </RelativeLayout>
 
     </LinearLayout>
 

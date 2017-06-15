@@ -8,14 +8,14 @@
     <LinearLayout
         android:id="@+id/stoff_item"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/list_item_height"
         android:orientation="horizontal"
         android:padding="16dp">
 
         <RelativeLayout
             android:id="@+id/text_container"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/list_item_height"
+            android:layout_height="wrap_content"
             android:layout_weight="1" >
 
             <TextView
@@ -35,15 +35,47 @@
                 android:layout_below="@+id/titel_view"
                 android:textAppearance="?android:textAppearanceMedium" />
 
+            <ImageView
+                android:id="@+id/list_panel_image"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/panel"
+                android:layout_below="@id/hersteller_view"
+                android:layout_marginLeft="-8dp"
+                android:layout_marginTop="8dp"/>
+
+            <ImageView
+                android:id="@+id/list_muster_image"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ansicht_stoffe"
+                android:layout_below="@id/hersteller_view"
+                android:layout_toRightOf="@id/list_panel_image"
+                android:layout_marginTop="8dp"/>
+
         </RelativeLayout>
 
-        <TextView
-            android:id="@+id/kategorie_view"
+        <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Baumwolle"
-            android:layout_alignParentRight="true"
-            android:textAppearance="?android:textAppearanceLarge"/>
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/kategorie_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Baumwolle"
+                android:textAppearance="?android:textAppearanceLarge"/>
+
+            <TextView
+                android:id="@+id/anzahl_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="5x"
+                android:layout_gravity="right"
+                android:textAppearance="?android:textAppearanceLarge" />
+
+        </LinearLayout>
 
     </LinearLayout>
 

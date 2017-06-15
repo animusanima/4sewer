@@ -10,7 +10,6 @@ import android.content.Loader;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
@@ -21,6 +20,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Spinner;
 
 import com.github.animusanima.a4sewer.R;
@@ -35,7 +35,7 @@ public class ScrollingClothEditActivity extends AppCompatActivity implements Loa
 
     private ClothEditingModel model;
 
-    private FloatingActionButton saveButton, deleteButton;
+    private ImageButton saveButton;
 
     private EditText nameEditText;
     private EditText herstellerEditText;
@@ -58,7 +58,7 @@ public class ScrollingClothEditActivity extends AppCompatActivity implements Loa
         Intent callingIntent = getIntent();
         model = new ClothEditingModel(callingIntent);
 
-        saveButton = (FloatingActionButton) findViewById(R.id.action_save);
+        saveButton = (ImageButton) findViewById(R.id.action_save);
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -67,20 +67,11 @@ public class ScrollingClothEditActivity extends AppCompatActivity implements Loa
             }
         });
 
-        deleteButton = (FloatingActionButton) findViewById(R.id.action_delete);
-        deleteButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                showDeleteConfirmationDialog();
-            }
-        });
-
         if (!model.isExistingCloth())
         {
             setTitle(getString(R.string.stoff_neu));
         } else {
             setTitle(getString(R.string.stoff_bearbeiten));
-            deleteButton.setVisibility(View.VISIBLE);
             getLoaderManager().initLoader(model.getCursorLoaderID(), null, this);
         }
 
@@ -188,12 +179,6 @@ public class ScrollingClothEditActivity extends AppCompatActivity implements Loa
         Integer panelValue = panelCheckBox.isChecked() ? 1 : 0;
         Integer musterValue = musterCheckBox.isChecked() ? 1 : 0;
 
-        if ( noChangesWhereMade(nameString, herstellerString, laengeString,
-                breiteString, einkaufspreisString, anzahlString) )
-        {
-            return;
-        }
-
         ContentValues stoffData = new ContentValues();
         stoffData.put(StoffeTableInformation.COLUMN_STOFFE_NAME, nameString);
         stoffData.put(StoffeTableInformation.COLUMN_STOFFE_HERSTELLER, herstellerString);
@@ -203,9 +188,6 @@ public class ScrollingClothEditActivity extends AppCompatActivity implements Loa
         setIntegerValue(stoffData, laengeString, StoffeTableInformation.COLUMN_STOFFE_LAENGE);
         setIntegerValue(stoffData, breiteString, StoffeTableInformation.COLUMN_STOFFE_BREITE);
         setIntegerValue(stoffData, anzahlString, StoffeTableInformation.COLUMN_STOFFE_ANZAHL);
-
-        //stoffData.put(StoffeTableInformation.COLUMN_STOFFE_PANEL, panelValue);
-        //stoffData.put(StoffeTableInformation.COLUMN_STOFFE_MUSTER, musterValue);
 
         setIntegerValue(stoffData, String.valueOf(panelValue), StoffeTableInformation.COLUMN_STOFFE_PANEL);
         setIntegerValue(stoffData, String.valueOf(musterValue), StoffeTableInformation.COLUMN_STOFFE_MUSTER);
@@ -218,21 +200,6 @@ public class ScrollingClothEditActivity extends AppCompatActivity implements Loa
         {
             stoffAktualisieren(stoffData, model.getExistingClothData());
         }
-    }
-
-    private boolean noChangesWhereMade(String nameString, String herstellerString,
-                                       String laengeString, String breiteString,
-                                       String einkaufspreisString, String anzahlString)
-    {
-        return (!model.isExistingCloth()
-                && TextUtils.isEmpty(nameString)
-                && TextUtils.isEmpty(herstellerString)
-                && TextUtils.isEmpty(laengeString)
-                && TextUtils.isEmpty(breiteString)
-                && TextUtils.isEmpty(einkaufspreisString)
-                && TextUtils.isEmpty(anzahlString)
-                && model.getSelectedColor() == null
-                && model.isUnknownCategory());
     }
 
     private void setIntegerValue(ContentValues stoffData, String textValue, String columnName)
@@ -277,45 +244,6 @@ public class ScrollingClothEditActivity extends AppCompatActivity implements Loa
             Log.e(LOG_TAG, "Error during update", ex);
         }
     }
-
-    private void showDeleteConfirmationDialog() {
-        // Create an AlertDialog.Builder and set the message, and click listeners
-        // for the postivie and negative buttons on the dialog.
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage(R.string.loeschen_dialog_nachricht);
-        builder.setPositiveButton(R.string.loeschen, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                loescheStoff();
-            }
-        });
-        builder.setNegativeButton(R.string.abbrechen, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                // User clicked the "Cancel" button, so dismiss the dialog
-                // and continue editing the pet.
-                if (dialog != null) {
-                    dialog.dismiss();
-                }
-            }
-        });
-
-        // Create and show the AlertDialog
-        AlertDialog alertDialog = builder.create();
-        alertDialog.show();
-    }
-
-    /**
-     * Perform the deletion of the pet in the database.
-     */
-    private void loescheStoff()
-    {
-        // Do nothing if not in edit mode
-        if (model.isExistingCloth())
-        {
-            getContentResolver().delete(model.getExistingClothData(), null, null);
-        }
-        finish();
-    }
-
 
     @Override
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle)

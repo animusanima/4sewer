@@ -5,8 +5,9 @@ import android.database.Cursor;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CheckBox;
 import android.widget.CursorAdapter;
+import android.widget.ImageView;
+import android.widget.RadioButton;
 import android.widget.TextView;
 
 import com.github.animusanima.a4sewer.R;
@@ -36,20 +37,18 @@ public class StoffCursorAdapter extends CursorAdapter
         TextView herstellerTextView = (TextView) view.findViewById(R.id.hersteller_view);
         TextView kategorieTextView = (TextView) view.findViewById(R.id.kategorie_view);
         TextView anzahlTextView = (TextView) view.findViewById(R.id.anzahl_view);
-        CheckBox panelView = (CheckBox) view.findViewById(R.id.list_panel_view);
-        CheckBox musterView = (CheckBox) view.findViewById(R.id.list_muster_view);
+        ImageView panelView = (ImageView) view.findViewById(R.id.list_panel_image);
+        ImageView musterView = (ImageView) view.findViewById(R.id.list_muster_image);
 
         this.stoff = new Stoff(cursor);
 
         nameTextView.setText(stoff.getName());
         herstellerTextView.setText(stoff.getHersteller());
         kategorieTextView.setText(stoff.getKategorie());
-        //anzahlTextView.setText(String.valueOf(stoff.getAnzahl() + "x"));
+        anzahlTextView.setText(String.valueOf(stoff.getAnzahl() + "x"));
 
-        //panelView.setChecked(stoff.isPanel());
-        //panelView.setEnabled(false);
-        //musterView.setChecked(stoff.isMuster());
-        //musterView.setEnabled(false);
+        panelView.setVisibility(stoff.isPanel() ? View.VISIBLE : View.GONE);
+        musterView.setVisibility(stoff.isMuster() ? View.VISIBLE : View.GONE);
     }
 
     @Override
