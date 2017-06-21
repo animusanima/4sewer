@@ -8,8 +8,12 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
@@ -21,6 +25,7 @@ import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.Spinner;
 
 import com.github.animusanima.a4sewer.R;
@@ -29,13 +34,18 @@ import com.github.animusanima.a4sewer.data.Stoff;
 import com.github.animusanima.a4sewer.db.stoffe.StoffeTableInformation;
 import com.github.animusanima.a4sewer.model.ClothEditingModel;
 
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.nio.ByteBuffer;
+
 public class ScrollingClothEditActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>
 {
     private final String LOG_TAG = ScrollingClothEditActivity.class.getSimpleName();
+    private final int IMAGE_SELECTION = 1;
 
     private ClothEditingModel model;
 
-    private ImageButton saveButton;
+    private FloatingActionButton saveButton;
 
     private EditText nameEditText;
     private EditText herstellerEditText;
@@ -47,6 +57,10 @@ public class ScrollingClothEditActivity extends AppCompatActivity implements Loa
     private Spinner stoffartSpinner;
     private CheckBox panelCheckBox;
     private CheckBox musterCheckBox;
+    private ImageButton addImage;
+    private ImageView stoffImageView;
+
+    private String selectedImagePath;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,7 +72,7 @@ public class ScrollingClothEditActivity extends AppCompatActivity implements Loa
         Intent callingIntent = getIntent();
         model = new ClothEditingModel(callingIntent);
 
-        saveButton = (ImageButton) findViewById(R.id.action_save);
+        saveButton = (FloatingActionButton) findViewById(R.id.action_save);
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -66,6 +80,18 @@ public class ScrollingClothEditActivity extends AppCompatActivity implements Loa
                 finish();
             }
         });
+
+        addImage = (ImageButton) findViewById(R.id.add_stoff_image);
+        addImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent imageIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                imageIntent.setType("image/*");
+                startActivityForResult(imageIntent, IMAGE_SELECTION);
+            }
+        });
+
+        stoffImageView = (ImageView) findViewById(R.id.selected_stoff_image);
 
         if (!model.isExistingCloth())
         {
@@ -95,6 +121,44 @@ public class ScrollingClothEditActivity extends AppCompatActivity implements Loa
         farbeEditText.setOnTouchListener(model.getTouchListener());
 
         setupSpinner();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent imageReturnedIntent) {
+        super.onActivityResult(requestCode, resultCode, imageReturnedIntent);
+        switch(requestCode){
+            case IMAGE_SELECTION:
+                if (resultCode == RESULT_OK) {
+                    try {
+                        BitmapFactory.Options options = new BitmapFactory.Options();
+                        options.inScaled = true;
+                        final Uri imageURI = imageReturnedIntent.getData();
+                        final InputStream inStr = getContentResolver().openInputStream(imageURI);
+                        final Bitmap selectedImg = BitmapFactory.decodeStream(inStr, null, options);
+                        stoffImageView.setImageBitmap(selectedImg);
+                        selectedImagePath = getRealPathFromURI(imageURI);
+                    } catch(FileNotFoundException ex) {
+                        Log.e("File not found", "Selected image was not found", ex);
+                    }
+                }
+        }
+    }
+
+
+
+    private String getRealPathFromURI(Uri contentUri) {
+        Cursor cursor = null;
+        try {
+            String[] proj = { MediaStore.Images.Media.DATA };
+            cursor = getContentResolver().query(contentUri,  proj, null, null, null);
+            int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+            cursor.moveToFirst();
+            return cursor.getString(column_index);
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+        }
     }
 
     /**
@@ -191,6 +255,8 @@ public class ScrollingClothEditActivity extends AppCompatActivity implements Loa
 
         setIntegerValue(stoffData, String.valueOf(panelValue), StoffeTableInformation.COLUMN_STOFFE_PANEL);
         setIntegerValue(stoffData, String.valueOf(musterValue), StoffeTableInformation.COLUMN_STOFFE_MUSTER);
+
+        stoffData.put(StoffeTableInformation.COLUMN_STOFFE_FOTO, selectedImagePath);
 
         if (!model.isExistingCloth())
         {

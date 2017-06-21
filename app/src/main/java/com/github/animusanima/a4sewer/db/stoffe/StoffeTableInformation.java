@@ -33,11 +33,12 @@ public final class StoffeTableInformation implements BaseColumns
     public final static String COLUMN_STOFFE_ANZAHL = "anzahl";
     public final static String COLUMN_STOFFE_PANEL = "panel";
     public final static String COLUMN_STOFFE_MUSTER = "muster";
+    public final static String COLUMN_STOFFE_FOTO = "foto";
 
     public final static String[] ALL_COLUMNS = new String[] {_ID, COLUMN_STOFFE_NAME, COLUMN_STOFFE_HERSTELLER,
             COLUMN_STOFFE_LAENGE, COLUMN_STOFFE_BREITE, COLUMN_STOFFE_KATEGORIE, COLUMN_STOFFE_FARBE,
             COLUMN_STOFFE_EINKAUFSPREIS, COLUMN_STOFFE_ANZAHL, COLUMN_STOFFE_PANEL,
-            COLUMN_STOFFE_MUSTER};
+            COLUMN_STOFFE_MUSTER, COLUMN_STOFFE_FOTO};
 
     public final static String[] FILTER_COLUMNS = new String[] {COLUMN_STOFFE_NAME, COLUMN_STOFFE_HERSTELLER,
             COLUMN_STOFFE_KATEGORIE};

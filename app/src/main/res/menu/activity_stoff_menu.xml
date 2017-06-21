@@ -2,6 +2,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
       xmlns:app="http://schemas.android.com/apk/res-auto"
       android:theme="@style/ThemeOverlay.AppCompat.Dark">
+
     <item
         android:id="@+id/search_stoff"
         android:icon="@android:drawable/ic_menu_search"

@@ -18,7 +18,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/label_name"
-            android:textAppearance="?android:textAppearanceLarge"/>
+            android:textAppearance="?android:textAppearanceMedium"/>
 
         <EditText
             android:id="@+id/edit_name"
@@ -30,7 +30,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/label_hersteller"
-            android:textAppearance="?android:textAppearanceLarge"/>
+            android:textAppearance="?android:textAppearanceMedium"/>
 
         <EditText
             android:id="@+id/edit_hersteller"
@@ -42,56 +42,60 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/label_laenge"
-            android:textAppearance="?android:textAppearanceLarge"/>
+            android:textAppearance="?android:textAppearanceMedium"/>
 
         <EditText
             android:id="@+id/edit_laenge"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:inputType="number"/>
 
         <TextView
             android:layout_marginTop="4dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/label_breite"
-            android:textAppearance="?android:textAppearanceLarge"/>
+            android:textAppearance="?android:textAppearanceMedium"/>
 
         <EditText
             android:id="@+id/edit_breite"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:inputType="number"/>
 
         <TextView
             android:layout_marginTop="4dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/label_einkaufspreis"
-            android:textAppearance="?android:textAppearanceLarge"/>
+            android:textAppearance="?android:textAppearanceMedium"/>
 
         <EditText
             android:id="@+id/edit_einkaufspreis"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:inputType="numberDecimal"/>
 
         <TextView
             android:layout_marginTop="4dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/label_anzahl"
-            android:textAppearance="?android:textAppearanceLarge"/>
+            android:textAppearance="?android:textAppearanceMedium"/>
 
         <EditText
             android:id="@+id/edit_anzahl"
             android:layout_marginTop="4dp"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:inputType="number"/>
 
         <TextView
             android:layout_marginTop="4dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/label_farbe"
-            android:textAppearance="?android:textAppearanceLarge"/>
+            android:textAppearance="?android:textAppearanceMedium"/>
 
         <EditText
             android:id="@+id/edit_farbe"
@@ -104,7 +108,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/label_stoffart"
-            android:textAppearance="?android:textAppearanceLarge"/>
+            android:textAppearance="?android:textAppearanceMedium"/>
 
         <Spinner
             android:id="@+id/spinner_stoffart"
@@ -127,17 +131,6 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-
-        <ImageButton
-            android:id="@+id/action_save"
-            android:layout_width="120dp"
-            android:layout_height="60dp"
-            android:layout_margin="@dimen/fab_margin"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentRight="true"
-            app:srcCompat="@drawable/ic_check_white_24dp"
-            android:theme="@style/Theme.AppCompat.Light"
-            android:background="@color/DarkCyan" />
 
         </RelativeLayout>
 
