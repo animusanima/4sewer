@@ -13,7 +13,7 @@ public class StoffDbHelper extends SQLiteOpenHelper
     public static final String LOG_TAG = StoffDbHelper.class.getSimpleName();
 
     private static final String DATABASE_NAME = "stoffe.db";
-    private static final int DATABASE_VERSION = 3;
+    private static final int DATABASE_VERSION = 1;
 
     public StoffDbHelper(Context context)
     {

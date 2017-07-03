@@ -1,19 +1,22 @@
 package com.github.animusanima.a4sewer.Stoffe;
 
+import android.Manifest;
 import android.app.AlertDialog;
 import android.app.LoaderManager;
+import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.CursorLoader;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.Loader;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
@@ -33,15 +36,21 @@ import com.github.animusanima.a4sewer.data.CategoryHelper;
 import com.github.animusanima.a4sewer.data.Stoff;
 import com.github.animusanima.a4sewer.db.stoffe.StoffeTableInformation;
 import com.github.animusanima.a4sewer.model.ClothEditingModel;
+import com.github.animusanima.a4sewer.utility.ImageUtils;
 
-import java.io.FileNotFoundException;
-import java.io.InputStream;
-import java.nio.ByteBuffer;
+import java.io.File;
+import java.io.FileInputStream;
 
 public class ScrollingClothEditActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>
 {
     private final String LOG_TAG = ScrollingClothEditActivity.class.getSimpleName();
     private final int IMAGE_SELECTION = 1;
+    private final int REQUEST_EXTERNAL_STORAGE = 2;
+
+    private static String[] PERMISSIONS_STORAGE = {
+            Manifest.permission.READ_EXTERNAL_STORAGE,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE
+    };
 
     private ClothEditingModel model;
 
@@ -85,8 +94,19 @@ public class ScrollingClothEditActivity extends AppCompatActivity implements Loa
         addImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent imageIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                Intent imageIntent = new Intent(Intent.ACTION_PICK);
                 imageIntent.setType("image/*");
+
+                int permission = ActivityCompat.checkSelfPermission(ScrollingClothEditActivity.this,
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE);
+                if (permission != PackageManager.PERMISSION_GRANTED)
+                {
+                    ActivityCompat.requestPermissions(
+                            ScrollingClothEditActivity.this,
+                            PERMISSIONS_STORAGE,
+                            REQUEST_EXTERNAL_STORAGE
+                    );
+                }
                 startActivityForResult(imageIntent, IMAGE_SELECTION);
             }
         });
@@ -129,35 +149,28 @@ public class ScrollingClothEditActivity extends AppCompatActivity implements Loa
         switch(requestCode){
             case IMAGE_SELECTION:
                 if (resultCode == RESULT_OK) {
-                    try {
-                        BitmapFactory.Options options = new BitmapFactory.Options();
-                        options.inScaled = true;
-                        final Uri imageURI = imageReturnedIntent.getData();
-                        final InputStream inStr = getContentResolver().openInputStream(imageURI);
-                        final Bitmap selectedImg = BitmapFactory.decodeStream(inStr, null, options);
-                        stoffImageView.setImageBitmap(selectedImg);
-                        selectedImagePath = getRealPathFromURI(imageURI);
-                    } catch(FileNotFoundException ex) {
-                        Log.e("File not found", "Selected image was not found", ex);
+                    final ContentResolver resolver = getContentResolver();
+
+                    final Uri imageURI = imageReturnedIntent.getData();
+                    selectedImagePath = ImageUtils.getAbsolutePathFromURI(imageURI, resolver);
+
+                    File f = new File(selectedImagePath);
+                    if (f.exists())
+                    {
+                        BitmapFactory.Options opts = new BitmapFactory.Options();
+                        opts.inScaled = true;
+                        opts.inJustDecodeBounds = false;
+
+                        try {
+                            FileInputStream input = new FileInputStream(f);
+                            final Bitmap selectedImg = BitmapFactory.decodeStream(input);
+                            if (selectedImg != null)
+                                stoffImageView.setImageBitmap(selectedImg);
+                        } catch (Exception e) {
+                            Log.e("ERROR", e.getMessage());
+                        }
                     }
                 }
-        }
-    }
-
-
-
-    private String getRealPathFromURI(Uri contentUri) {
-        Cursor cursor = null;
-        try {
-            String[] proj = { MediaStore.Images.Media.DATA };
-            cursor = getContentResolver().query(contentUri,  proj, null, null, null);
-            int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-            cursor.moveToFirst();
-            return cursor.getString(column_index);
-        } finally {
-            if (cursor != null) {
-                cursor.close();
-            }
         }
     }
 
@@ -339,16 +352,16 @@ public class ScrollingClothEditActivity extends AppCompatActivity implements Loa
             Stoff stoff = new Stoff(cursor);
 
             nameEditText.setText(stoff.getName());
-            herstellerEditText.setText(stoff.getHersteller());
-            laengeEditText.setText(String.valueOf(stoff.getLaenge()));
-            breiteEditText.setText(String.valueOf(stoff.getBreite()));
-            einkaufspreisEditText.setText(String.valueOf(stoff.getEinkaufspreis()));
-            anzahlEditText.setText(String.valueOf(stoff.getAnzahl()));
-            farbeEditText.setText(stoff.getFarbe());
+            herstellerEditText.setText(stoff.getManufacturer());
+            laengeEditText.setText(String.valueOf(stoff.getLength()));
+            breiteEditText.setText(String.valueOf(stoff.getWidth()));
+            einkaufspreisEditText.setText(String.valueOf(stoff.getBuyersPrice()));
+            anzahlEditText.setText(String.valueOf(stoff.getAmount()));
+            farbeEditText.setText(stoff.getColor());
             panelCheckBox.setChecked(stoff.isPanel());
             musterCheckBox.setChecked(stoff.isMuster());
 
-            int kategorie = CategoryHelper.getIDByCategory(stoff.getKategorie());
+            int kategorie = CategoryHelper.getIDByCategory(stoff.getCategory());
             switch (kategorie) {
                 case StoffeTableInformation.KATEGORIE_BAUMWOLLE:
                     stoffartSpinner.setSelection(1);
@@ -372,6 +385,22 @@ public class ScrollingClothEditActivity extends AppCompatActivity implements Loa
                     stoffartSpinner.setSelection(0);
                     break;
             }
+
+            File f = new File(stoff.getImagePath());
+            if (f.exists())
+            {
+                BitmapFactory.Options opts = new BitmapFactory.Options();
+                opts.inScaled = true;
+                opts.inJustDecodeBounds = false;
+
+                try {
+                    FileInputStream input = new FileInputStream(f);
+                    Bitmap b = BitmapFactory.decodeStream(input);
+                    stoffImageView.setImageBitmap(b);
+                } catch (Exception e) {
+                    Log.e("ERROR", e.getMessage());
+                }
+            }
         }
     }
 
@@ -389,5 +418,6 @@ public class ScrollingClothEditActivity extends AppCompatActivity implements Loa
         farbeEditText.setText("");
         panelCheckBox.setChecked(false);
         musterCheckBox.setChecked(false);
+        stoffImageView.setImageBitmap(null);
     }
 }

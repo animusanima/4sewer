@@ -6,32 +6,19 @@ import com.github.animusanima.a4sewer.db.stoffe.StoffeTableInformation;
 
 public class Stoff
 {
-    private String name, hersteller, farbe, kategorie;
-    private int laenge, breite,  anzahl;
-    private double einkaufspreis;
+    private String name;
+    private String manufacturer;
+    private String color;
+    private String category;
+    private String imagePath;
+
+    private int ID, length, width, amount;
+    private double buyersPrice;
     private boolean isPanel, isMuster;
-
-    public Stoff(String name, String hersteller,
-                 int laenge, int breite, String kategorie, String farbe,
-                 double einkaufspreis, int anzahl, boolean isPanel, boolean isMuster)
-    {
-        this.name = name;
-        this.hersteller = hersteller;
-
-        this.laenge = laenge;
-        this.breite = breite;
-        this.kategorie = kategorie;
-        this.farbe = farbe;
-
-        this.einkaufspreis = einkaufspreis;
-        this.anzahl = anzahl;
-
-        this.isPanel = isPanel;
-        this.isMuster = isMuster;
-    }
 
     public Stoff(Cursor cursor)
     {
+        int idColumnIndex = cursor.getColumnIndex(StoffeTableInformation._ID);
         int nameColumnIndex = cursor.getColumnIndex(StoffeTableInformation.COLUMN_STOFFE_NAME);
         int herstellerColumnIndex = cursor.getColumnIndex(StoffeTableInformation.COLUMN_STOFFE_HERSTELLER);
         int laengeColumnIndex = cursor.getColumnIndex(StoffeTableInformation.COLUMN_STOFFE_LAENGE);
@@ -42,43 +29,53 @@ public class Stoff
         int anzahlColumnIndex = cursor.getColumnIndex(StoffeTableInformation.COLUMN_STOFFE_ANZAHL);
         int panelColumnIndex = cursor.getColumnIndex(StoffeTableInformation.COLUMN_STOFFE_PANEL);
         int musterColumnIndex = cursor.getColumnIndex(StoffeTableInformation.COLUMN_STOFFE_MUSTER);
+        int fotoIndex = cursor.getColumnIndex(StoffeTableInformation.COLUMN_STOFFE_FOTO);
 
+        this.ID = cursor.getInt(idColumnIndex);
         this.name = cursor.getString(nameColumnIndex);
-        this.hersteller = cursor.getString(herstellerColumnIndex);
-        this.laenge = cursor.getInt(laengeColumnIndex);
-        this.breite = cursor.getInt(breiteColumnIndex);
-        this.kategorie = cursor.getString(kategorieColumnIndex);
-        this.einkaufspreis = cursor.getDouble(einkaufspreisColumnIndex);
-        this.farbe = cursor.getString(farbeColumnIndex);
-        this.anzahl = cursor.getInt(anzahlColumnIndex);
+        this.manufacturer = cursor.getString(herstellerColumnIndex);
+        this.length = cursor.getInt(laengeColumnIndex);
+        this.width = cursor.getInt(breiteColumnIndex);
+        this.category = cursor.getString(kategorieColumnIndex);
+        this.buyersPrice = cursor.getDouble(einkaufspreisColumnIndex);
+        this.color = cursor.getString(farbeColumnIndex);
+        this.amount = cursor.getInt(anzahlColumnIndex);
         this.isPanel = cursor.getInt(panelColumnIndex) == 1;
         this.isMuster = cursor.getInt(musterColumnIndex) == 1;
-
+        this.imagePath = cursor.getString(fotoIndex);
     }
 
-    public String getHersteller()
-    {
-        return hersteller;
+    public int getID() {
+        return ID;
     }
 
-    public int getLaenge()
-    {
-        return laenge;
+    public String getImagePath() {
+        return imagePath;
     }
 
-    public int getBreite()
+    public String getManufacturer()
     {
-        return breite;
+        return manufacturer;
     }
 
-    public String getKategorie()
+    public int getLength()
     {
-        return kategorie;
+        return length;
     }
 
-    public double getEinkaufspreis()
+    public int getWidth()
     {
-        return einkaufspreis;
+        return width;
+    }
+
+    public String getCategory()
+    {
+        return category;
+    }
+
+    public double getBuyersPrice()
+    {
+        return buyersPrice;
     }
 
     public String getName()
@@ -86,13 +83,13 @@ public class Stoff
         return name;
     }
 
-    public String getFarbe()
+    public String getColor()
     {
-        return farbe;
+        return color;
     }
 
-    public int getAnzahl() {
-        return anzahl;
+    public int getAmount() {
+        return amount;
     }
 
     public boolean isPanel() {
@@ -101,5 +98,53 @@ public class Stoff
 
     public boolean isMuster() {
         return this.isMuster;
+    }
+
+    public void setID(int ID) {
+        this.ID = ID;
+    }
+
+    public void setAmount(int amount) {
+        this.amount = amount;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setManufacturer(String manufacturer) {
+        this.manufacturer = manufacturer;
+    }
+
+    public void setColor(String color) {
+        this.color = color;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    public void setLength(int length) {
+        this.length = length;
+    }
+
+    public void setWidth(int width) {
+        this.width = width;
+    }
+
+    public void setBuyersPrice(double buyersPrice) {
+        this.buyersPrice = buyersPrice;
+    }
+
+    public void setPanel(boolean panel) {
+        isPanel = panel;
+    }
+
+    public void setMuster(boolean muster) {
+        isMuster = muster;
+    }
+
+    public void setImagePath(String imagePath) {
+        this.imagePath = imagePath;
     }
 }

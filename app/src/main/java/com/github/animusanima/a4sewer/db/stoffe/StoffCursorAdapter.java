@@ -1,32 +1,32 @@
 package com.github.animusanima.a4sewer.db.stoffe;
 
+import android.Manifest;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Environment;
-import android.os.ParcelFileDescriptor;
+import android.support.v4.app.ActivityCompat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.CursorAdapter;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.github.animusanima.a4sewer.R;
 import com.github.animusanima.a4sewer.data.Stoff;
 
-import java.io.FileDescriptor;
-import java.io.FileNotFoundException;
-import java.io.InputStream;
-import java.sql.Blob;
+import java.io.File;
+import java.io.FileInputStream;
 
 public class StoffCursorAdapter extends CursorAdapter
 {
@@ -62,35 +62,35 @@ public class StoffCursorAdapter extends CursorAdapter
         this.stoff = new Stoff(cursor);
 
         nameTextView.setText(stoff.getName());
-        herstellerTextView.setText(stoff.getHersteller());
-        kategorieTextView.setText(stoff.getKategorie());
-        anzahlTextView.setText(String.valueOf(stoff.getAnzahl() + "x"));
+        herstellerTextView.setText(stoff.getManufacturer());
+        kategorieTextView.setText(stoff.getCategory());
+        anzahlTextView.setText(String.valueOf(stoff.getAmount() + "x"));
 
         panelView.setVisibility(stoff.isPanel() ? View.VISIBLE : View.GONE);
         musterView.setVisibility(stoff.isMuster() ? View.VISIBLE : View.GONE);
 
-        int ID_Index = cursor.getColumnIndex(StoffeTableInformation._ID);
-        final int item_ID = cursor.getInt(ID_Index);
+        File f = new File(stoff.getImagePath());
+        if (f.exists())
+        {
+            BitmapFactory.Options opts = new BitmapFactory.Options();
+            opts.inScaled = true;
+            opts.inJustDecodeBounds = false;
 
-        try {
-            int fotoIndex = cursor.getColumnIndex(StoffeTableInformation.COLUMN_STOFFE_FOTO);
-            Uri imageURI = Uri.parse(Environment.getExternalStorageDirectory() + "/" + cursor.getString(fotoIndex));
-            ParcelFileDescriptor parcelFileDescriptor =
-                    contentResolver.openFileDescriptor(imageURI, "r");
-            FileDescriptor fileDescriptor = parcelFileDescriptor.getFileDescriptor();
-            Bitmap currentImage = BitmapFactory.decodeFileDescriptor(fileDescriptor);
-
-            if (currentImage != null) {
-                stoffImage.setImageBitmap(currentImage);
+            try {
+                FileInputStream input = new FileInputStream(f);
+                Bitmap b = BitmapFactory.decodeStream(input);
+                stoffImage.setImageBitmap(b);
+                stoffImage.setVisibility(View.VISIBLE);
+            } catch (Exception e) {
+                Log.e("ERROR", e.getMessage());
             }
-        } catch (FileNotFoundException filEx) {
         }
 
         ImageView deleteButton = (ImageView) view.findViewById(R.id.delete_button);
         deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showDeleteConfirmation(item_ID);
+                showDeleteConfirmation(stoff.getID());
             }
         });
     }

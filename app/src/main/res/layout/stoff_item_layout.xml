@@ -16,7 +16,10 @@
             android:id="@+id/stoff_image"
             android:layout_width="100dp"
             android:layout_height="match_parent"
-            android:visibility="gone" />
+            android:visibility="visible"
+            android:scaleType="centerCrop"
+            android:adjustViewBounds="true"
+            android:layout_marginRight="16dp"/>
 
         <RelativeLayout
             android:id="@+id/text_container"
